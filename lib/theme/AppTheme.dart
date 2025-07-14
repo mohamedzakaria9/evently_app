@@ -28,9 +28,13 @@ class AppTheme {
       backgroundColor: AppColors.appPrimaryColor,
     ),
   );
+
   static ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.darkBackGroundColor,
-    appBarTheme: AppBarTheme(color: AppColors.appPrimaryColor),
+    appBarTheme: AppBarTheme(
+      //color: AppColors.darkBackGroundColor,
+      backgroundColor: AppColors.darkBackGroundColor,
+    ),
     bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: AppColors.darkBackGroundColor,
     ),

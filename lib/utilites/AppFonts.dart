@@ -11,4 +11,9 @@ class AppFonts {
   static const TextStyle regular20White = TextStyle(fontSize: 20,fontWeight: FontWeight.w400 , color: AppColors.whiteColor);
   static const TextStyle bold12White = TextStyle(fontSize: 12, fontWeight: FontWeight.bold,color: Color(0xffF2FEFF));
   static const TextStyle bold14White = TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Color(0xffF2FEFF));
+  static const TextStyle bolc14MainAppColor = TextStyle(fontSize: 14,fontWeight: FontWeight.bold,color: Color(0xff5669FF));
+  static const TextStyle regular14White = TextStyle(fontSize: 14,fontWeight: FontWeight.w400 , color: AppColors.whiteColor);
+  static const TextStyle medium14White = TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: AppColors.whiteColor);
+  static const TextStyle medium16Primary = TextStyle(fontSize: 16, fontWeight: FontWeight.w500,color: AppColors.appPrimaryColor);
+  static const TextStyle medium16White = TextStyle(fontSize: 16, fontWeight: FontWeight.w500 , color: AppColors.whiteColor);
 }

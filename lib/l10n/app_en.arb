@@ -13,5 +13,15 @@
   "home": "Home",
   "maps": "Map",
   "favorites": "Favorites",
-  "profile": "Profile"
+  "profile": "Profile",
+  "all": "All",
+  "sport": "Sport",
+  "birthday": "Birthday",
+  "meeting": "Meeting",
+  "gaming": "Gaming",
+  "workshop": "WorkShop",
+  "bookClub": "Book Club",
+  "exhibition": "Exhibition",
+  "holiday": "Holiday",
+  "eating": "Eating"
 }

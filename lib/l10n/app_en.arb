@@ -1,0 +1,17 @@
+{
+  "hello": "Hello",
+  "goodEvening": "Good Evening",
+  "goodMorning": "Good Morning",
+  "goodNight": "Good Night",
+  "evently": "Evently",
+  "language": "Language",
+  "arabic": "Arabic",
+  "english": "English",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "home": "Home",
+  "maps": "Map",
+  "favorites": "Favorites",
+  "profile": "Profile"
+}

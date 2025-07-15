@@ -1,6 +1,7 @@
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
+import 'package:evently_app/ui/home_screen/EventsListView.dart';
 import 'package:evently_app/utilites/AppColors.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                themeProvider.changeAppTheme(
+                  theme: themeProvider.appTheme == AppTheme.lightTheme
+                      ? AppTheme.darkTheme
+                      : AppTheme.lightTheme,
+                );
+              },
               icon: ImageIcon(
                 AssetImage(AppImages.themeChangeIcon),
                 color: AppColors.whiteColor,
@@ -130,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
             tabAlignment: TabAlignment.start,
           ),
         ),
+        body: EventsListView(),
       ),
     );
   }

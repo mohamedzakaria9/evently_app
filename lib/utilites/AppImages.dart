@@ -10,4 +10,5 @@ class AppImages{
   static const String profileIconFilled = "assets/images/ProfileIconFilled.png";
   static const String addIcon = "assets/images/AddIcon.png";
   static const String themeChangeIcon = "assets/images/ThemChangeicon.png";
+  static const String sportImage = "assets/images/SportImage.png";
 }

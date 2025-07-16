@@ -23,5 +23,17 @@
   "bookClub": "نادي الكتاب",
   "exhibition": "معرض",
   "holiday": "عطلة",
-  "eating": "طعام"
+  "eating": "طعام",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "forget_password": "نسيت كلمة المرور",
+  "login": "تسجيل الدخول",
+  "do_not_have_an_account": "ليس لديك حساب؟",
+  "crate_account": "إنشاء حساب",
+  "or": "أو",
+  "login_with_google": "تسجيل الدخول باستخدام جوجل",
+  "re_Password": "إعادة كلمة المرور",
+  "create_account": "إنشاء حساب",
+  "already_have_an_account": "لديك حساب بالفعل؟",
+  "search_for_event": "ابحث عن حدث"
 }

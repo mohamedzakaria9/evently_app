@@ -82,4 +82,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get eating => 'طعام';
+
+  @override
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get password => 'كلمة المرور';
+
+  @override
+  String get forget_password => 'نسيت كلمة المرور';
+
+  @override
+  String get login => 'تسجيل الدخول';
+
+  @override
+  String get do_not_have_an_account => 'ليس لديك حساب؟';
+
+  @override
+  String get crate_account => 'إنشاء حساب';
+
+  @override
+  String get or => 'أو';
+
+  @override
+  String get login_with_google => 'تسجيل الدخول باستخدام جوجل';
+
+  @override
+  String get re_Password => 'إعادة كلمة المرور';
+
+  @override
+  String get create_account => 'إنشاء حساب';
+
+  @override
+  String get already_have_an_account => 'لديك حساب بالفعل؟';
+
+  @override
+  String get search_for_event => 'ابحث عن حدث';
 }

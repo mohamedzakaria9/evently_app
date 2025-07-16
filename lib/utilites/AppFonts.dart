@@ -83,4 +83,29 @@ class AppFonts {
     fontWeight: FontWeight.bold,
     color: AppColors.blackColor,
   );
+  static const TextStyle medium16DarkGrey = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppColors.darkGery,
+  );
+  static const TextStyle bold16Primary = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+    color: AppColors.appPrimaryColor
+  );
+  static const TextStyle medium20White = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: AppColors.whiteColor,
+  );
+  static const TextStyle medium16Black = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppColors.blackColor,
+  );
+  static const TextStyle medium20Primary = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: AppColors.appPrimaryColor,
+  );
 }

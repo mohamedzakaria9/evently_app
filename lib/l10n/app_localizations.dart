@@ -247,6 +247,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Eating'**
   String get eating;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @forget_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Forget Password'**
+  String get forget_password;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @do_not_have_an_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t Have An Account'**
+  String get do_not_have_an_account;
+
+  /// No description provided for @crate_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Crate Account'**
+  String get crate_account;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'Or'**
+  String get or;
+
+  /// No description provided for @login_with_google.
+  ///
+  /// In en, this message translates to:
+  /// **'Login With Google'**
+  String get login_with_google;
+
+  /// No description provided for @re_Password.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-Password'**
+  String get re_Password;
+
+  /// No description provided for @create_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Create An Account'**
+  String get create_account;
+
+  /// No description provided for @already_have_an_account.
+  ///
+  /// In en, this message translates to:
+  /// **'Already Have An Account'**
+  String get already_have_an_account;
+
+  /// No description provided for @search_for_event.
+  ///
+  /// In en, this message translates to:
+  /// **'Search For Event'**
+  String get search_for_event;
 }
 
 class _AppLocalizationsDelegate

@@ -11,4 +11,10 @@ class AppImages{
   static const String addIcon = "assets/images/AddIcon.png";
   static const String themeChangeIcon = "assets/images/ThemChangeicon.png";
   static const String sportImage = "assets/images/SportImage.png";
+  static const String emailIcon = "assets/images/EmailIcon.png";
+  static const String googleIcon = "assets/images/GoogleIcon.png";
+  static const String appLogo = "assets/images/Logo.png";
+  static const String passwordIcon = "assets/images/PasswordIcon.png";
+  static const String showHidePasswordIcon = "assets/images/ShowHidePasswordIcon.png";
+  static const String userNameIcon = "assets/images/UserNameIcon.png";
 }

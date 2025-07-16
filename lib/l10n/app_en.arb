@@ -23,5 +23,17 @@
   "bookClub": "Book Club",
   "exhibition": "Exhibition",
   "holiday": "Holiday",
-  "eating": "Eating"
+  "eating": "Eating",
+  "email": "Email",
+  "password": "Password",
+  "forget_password": "Forget Password",
+  "login": "Login",
+  "do_not_have_an_account": "Don't Have An Account",
+  "crate_account": "Crate Account",
+  "or": "Or",
+  "login_with_google": "Login With Google",
+  "re_Password": "Re-Password",
+  "create_account": "Create An Account",
+  "already_have_an_account": "Already Have An Account",
+  "search_for_event": "Search For Event"
 }

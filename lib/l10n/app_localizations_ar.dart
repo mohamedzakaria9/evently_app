@@ -99,7 +99,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get do_not_have_an_account => 'ليس لديك حساب؟';
 
   @override
-  String get crate_account => 'إنشاء حساب';
+  String get create_account => 'إنشاء حساب';
 
   @override
   String get or => 'أو';
@@ -111,11 +111,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get re_Password => 'إعادة كلمة المرور';
 
   @override
-  String get create_account => 'إنشاء حساب';
-
-  @override
   String get already_have_an_account => 'لديك حساب بالفعل؟';
 
   @override
   String get search_for_event => 'ابحث عن حدث';
+
+  @override
+  String get register => 'تسجيل';
+
+  @override
+  String get name => 'الأسم';
 }

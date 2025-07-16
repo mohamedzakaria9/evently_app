@@ -3,6 +3,8 @@ import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/LanguageProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
+import 'package:evently_app/ui/auth/login_screen/LoginPage.dart';
+import 'package:evently_app/ui/auth/sign_up_screen/SignUpPage.dart';
 import 'package:evently_app/ui/favorites_screen/FavoritesScreen.dart';
 import 'package:evently_app/ui/home_screen/Home.dart';
 import 'package:evently_app/ui/home_screen/HomeScreen.dart';
@@ -41,13 +43,15 @@ class MyApp extends StatelessWidget {
       locale: Locale(provider.localeLanguage),
       supportedLocales: [Locale("en"), Locale("ar")],
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.Home,
+      initialRoute: Routes.LoginScreen,
       routes: {
         Routes.Home: (context) => Home(),
         Routes.HomeScreen: (context) => HomeScreen(),
         Routes.ProfileTap: (context) => ProfileTap(),
         Routes.FavoritesScreen: (context) => FavoritesScreen(),
         Routes.MapsScreen: (context)=>MapsScreen(),
+        Routes.LoginScreen: (context)=>LoginPage(),
+        Routes.SignUpScreen:(context)=>SignUpPage()
       },
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

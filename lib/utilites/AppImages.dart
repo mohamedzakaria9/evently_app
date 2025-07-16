@@ -17,4 +17,5 @@ class AppImages{
   static const String passwordIcon = "assets/images/PasswordIcon.png";
   static const String showHidePasswordIcon = "assets/images/ShowHidePasswordIcon.png";
   static const String userNameIcon = "assets/images/UserNameIcon.png";
+  static const String searchIcon = "assets/images/SearchIcon.png";
 }

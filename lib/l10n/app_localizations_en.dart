@@ -96,10 +96,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login => 'Login';
 
   @override
-  String get do_not_have_an_account => 'Don\'t Have An Account';
+  String get do_not_have_an_account => 'Don\'t Have Account';
 
   @override
-  String get crate_account => 'Crate Account';
+  String get create_account => 'Create Account';
 
   @override
   String get or => 'Or';
@@ -111,11 +111,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get re_Password => 'Re-Password';
 
   @override
-  String get create_account => 'Create An Account';
-
-  @override
   String get already_have_an_account => 'Already Have An Account';
 
   @override
   String get search_for_event => 'Search For Event';
+
+  @override
+  String get register => 'Register';
+
+  @override
+  String get name => 'Name';
 }

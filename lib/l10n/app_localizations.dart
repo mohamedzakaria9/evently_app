@@ -275,14 +275,14 @@ abstract class AppLocalizations {
   /// No description provided for @do_not_have_an_account.
   ///
   /// In en, this message translates to:
-  /// **'Don\'t Have An Account'**
+  /// **'Don\'t Have Account'**
   String get do_not_have_an_account;
 
-  /// No description provided for @crate_account.
+  /// No description provided for @create_account.
   ///
   /// In en, this message translates to:
-  /// **'Crate Account'**
-  String get crate_account;
+  /// **'Create Account'**
+  String get create_account;
 
   /// No description provided for @or.
   ///
@@ -302,12 +302,6 @@ abstract class AppLocalizations {
   /// **'Re-Password'**
   String get re_Password;
 
-  /// No description provided for @create_account.
-  ///
-  /// In en, this message translates to:
-  /// **'Create An Account'**
-  String get create_account;
-
   /// No description provided for @already_have_an_account.
   ///
   /// In en, this message translates to:
@@ -319,6 +313,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search For Event'**
   String get search_for_event;
+
+  /// No description provided for @register.
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get register;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
 }
 
 class _AppLocalizationsDelegate

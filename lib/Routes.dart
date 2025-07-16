@@ -4,4 +4,6 @@ class Routes{
   static const String MapsScreen = "mapsScreen";
   static const String FavoritesScreen = "favoritesScreen";
   static const String Home = "home";
+  static const String LoginScreen = "loginScreen";
+  static const String SignUpScreen = "signUpScreen";
 }

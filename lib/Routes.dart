@@ -6,4 +6,5 @@ class Routes{
   static const String Home = "home";
   static const String LoginScreen = "loginScreen";
   static const String SignUpScreen = "signUpScreen";
+  static const String AddEventPage = "addEventPage";
 }

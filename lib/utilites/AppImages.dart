@@ -10,7 +10,6 @@ class AppImages{
   static const String profileIconFilled = "assets/images/ProfileIconFilled.png";
   static const String addIcon = "assets/images/AddIcon.png";
   static const String themeChangeIcon = "assets/images/ThemChangeicon.png";
-  static const String sportImage = "assets/images/SportImage.png";
   static const String emailIcon = "assets/images/EmailIcon.png";
   static const String googleIcon = "assets/images/GoogleIcon.png";
   static const String appLogo = "assets/images/Logo.png";
@@ -18,4 +17,17 @@ class AppImages{
   static const String showHidePasswordIcon = "assets/images/ShowHidePasswordIcon.png";
   static const String userNameIcon = "assets/images/UserNameIcon.png";
   static const String searchIcon = "assets/images/SearchIcon.png";
+  static const String sportImage = "assets/images/SportImage.png";
+  static const String birthDayImage = "assets/images/BirthDayImage.png";
+  static const String bookClubImage = "assets/images/BookClub.png";
+  static const String eatingImage = "assets/images/EatingImage.png";
+  static const String exhibitionImage = "assets/images/ExhibitionImage.png";
+  static const String gamingImage = "assets/images/GmaingImage.png";
+  static const String holidayImage = "assets/images/HolidayImage.png";
+  static const String meetingImage = "assets/images/MeetingImage.png";
+  static const String workshopImage = "assets/images/WorkShopImage.png";
+  static const String eventDateIcon = "assets/images/EventDateIcon.png";
+  static const String eventTimeIcon = "assets/images/EventTimeIcon.png";
+  static const String locationIcon = "assets/images/LocationIcon.png";
+  static const String titleIcon = "assets/images/TitleIcon.png";
 }

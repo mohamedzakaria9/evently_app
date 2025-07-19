@@ -3,6 +3,7 @@ import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/LanguageProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
+import 'package:evently_app/ui/add_event_page/AddEventPage.dart';
 import 'package:evently_app/ui/auth/login_screen/LoginPage.dart';
 import 'package:evently_app/ui/auth/sign_up_screen/SignUpPage.dart';
 import 'package:evently_app/ui/favorites_screen/FavoritesScreen.dart';
@@ -28,7 +29,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<LanguageProvider>(context);
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       locale: Locale(provider.localeLanguage),
       supportedLocales: [Locale("en"), Locale("ar")],
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.LoginScreen,
+      initialRoute: Routes.Home,
       routes: {
         Routes.Home: (context) => Home(),
         Routes.HomeScreen: (context) => HomeScreen(),
@@ -51,7 +51,8 @@ class MyApp extends StatelessWidget {
         Routes.FavoritesScreen: (context) => FavoritesScreen(),
         Routes.MapsScreen: (context)=>MapsScreen(),
         Routes.LoginScreen: (context)=>LoginPage(),
-        Routes.SignUpScreen:(context)=>SignUpPage()
+        Routes.SignUpScreen:(context)=>SignUpPage(),
+        Routes.AddEventPage:(context)=>AddEventPage()
       },
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

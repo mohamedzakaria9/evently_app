@@ -36,5 +36,14 @@
   "already_have_an_account": "لديك حساب بالفعل؟",
   "search_for_event": "ابحث عن حدث",
   "register": "تسجيل",
-  "name": "الأسم"
+  "name": "الأسم",
+  "create_event": "إنشاء حدث",
+  "title": "العنوان",
+  "description": "الوصف",
+  "event_date": "تاريخ الحدث",
+  "event_time": "وقت الحدث",
+  "location": "الموقع",
+  "add_event": "إضافة حدث",
+  "choose_date": "أختر تاريخ",
+  "choose_time": "أختر وقت"
 }

@@ -108,4 +108,14 @@ class AppFonts {
     fontWeight: FontWeight.w500,
     color: AppColors.appPrimaryColor,
   );
+  static const TextStyle regular24Primary = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.w400,
+    color: AppColors.appPrimaryColor,
+  );
+  static const TextStyle regular24White = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.w400,
+    color: AppColors.whiteColor,
+  );
 }

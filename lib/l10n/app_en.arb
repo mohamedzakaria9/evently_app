@@ -36,5 +36,15 @@
   "already_have_an_account": "Already Have An Account",
   "search_for_event": "Search For Event",
   "register": "Register",
-  "name": "Name"
+  "name": "Name",
+  "create_event": "Create Event",
+  "title": "Title",
+  "description": "Description",
+  "event_date": "Event Date",
+  "event_time": "Event Time",
+  "location": "Location",
+  "add_event": "Add Event",
+  "choose_date": "Choose Date",
+  "choose_time": "Choose Time"
+
 }

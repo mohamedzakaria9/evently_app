@@ -20,7 +20,7 @@ class Customtextformfield extends StatelessWidget {
   bool password;
   validation validate;
   TextEditingController? textEditingController;
-
+  int? maxLines;
   Customtextformfield({
     this.borderColor = AppColors.darkGery,
     required this.prefixIcon,
@@ -32,12 +32,14 @@ class Customtextformfield extends StatelessWidget {
     this.password = false,
     required this.validate,
     this.textEditingController,
+    this.maxLines
   });
 
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     return TextFormField(
+      maxLines: maxLines ?? 1,
       controller: textEditingController,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(

@@ -2,6 +2,7 @@ import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:flutter/material.dart';
 
+import '../../Routes.dart';
 import '../../utilites/AppColors.dart';
 import '../favorites_screen/FavoritesScreen.dart';
 import '../maps_screen/MapsScreen.dart';
@@ -29,7 +30,9 @@ class _HomeScreenState extends State<Home> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, Routes.AddEventPage);
+        },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40),
           side: BorderSide(color: AppColors.whiteColor, width: 5),

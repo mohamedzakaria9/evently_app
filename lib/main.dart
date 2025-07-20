@@ -11,11 +11,18 @@ import 'package:evently_app/ui/home_screen/Home.dart';
 import 'package:evently_app/ui/home_screen/HomeScreen.dart';
 import 'package:evently_app/ui/maps_screen/MapsScreen.dart';
 import 'package:evently_app/ui/profileTap/ProfileTap.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MultiProvider(
       providers: [

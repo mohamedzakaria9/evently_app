@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently_app/Routes.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/LanguageProvider.dart';
@@ -20,9 +21,11 @@ import 'firebase_options.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseFirestore.instance.disableNetwork();
   runApp(
     MultiProvider(
       providers: [

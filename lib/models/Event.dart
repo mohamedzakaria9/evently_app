@@ -1,5 +1,5 @@
 class Event {
-  int? id;
+  String? id;
   String title;
   String category;
   String image;

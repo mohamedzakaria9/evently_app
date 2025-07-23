@@ -50,6 +50,7 @@ class _AddEventPageState extends State<AddEventPage> {
   String? currentTime;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -119,10 +120,10 @@ class _AddEventPageState extends State<AddEventPage> {
                   labelText: AppLocalizations.of(context)!.title,
                   textEditingController: titleController,
                   validate: (text) {
-                    if(text == ""){
+                    if (text == "") {
                       //print("$text this is what title contains it's not null");
                       return "Enter title";
-                    }else{
+                    } else {
                       //print("$text this is what title contains  null");
                       return null;
                     }
@@ -140,10 +141,10 @@ class _AddEventPageState extends State<AddEventPage> {
                   labelText: AppLocalizations.of(context)!.description,
                   textEditingController: descriptionController,
                   validate: (text) {
-                    if(text == ""){
+                    if (text == "") {
                       //print("$text this is what description contains it's not null");
                       return "Enter description";
-                    }else{
+                    } else {
                       //print("$text this is what description contains  null");
                       return null;
                     }
@@ -160,22 +161,23 @@ class _AddEventPageState extends State<AddEventPage> {
                     ),
                     Spacer(),
                     InkWell(
-                      onTap: () async{
+                      onTap: () async {
                         var date = await showDatePicker(
                           context: context,
                           firstDate: DateTime.now(),
-                          lastDate: DateTime(2026,1,1),
+                          lastDate: DateTime(2026, 1, 1),
                         );
-                        if(date == null){
+                        if (date == null) {
                           currentDate = null;
-                        }else{
+                        } else {
                           currentDate = DateFormat.yMMMd().format(date);
                         }
-                        setState(() {
-
-                        });
+                        setState(() {});
                       },
-                      child: Text(currentDate == null ? AppLocalizations.of(context)!.choose_date : currentDate!,
+                      child: Text(
+                        currentDate == null
+                            ? AppLocalizations.of(context)!.choose_date
+                            : currentDate!,
                         style: AppFonts.medium16Primary,
                       ),
                     ),
@@ -197,17 +199,17 @@ class _AddEventPageState extends State<AddEventPage> {
                           context: context,
                           initialTime: TimeOfDay.now(),
                         );
-                        if(time == null){
+                        if (time == null) {
                           currentTime = null;
-                        }else{
+                        } else {
                           currentTime = "${time.hour} : ${time.minute}";
                         }
-                        setState(() {
-
-                        });
+                        setState(() {});
                       },
                       child: Text(
-                        currentTime == null ? AppLocalizations.of(context)!.choose_time : currentTime!,
+                        currentTime == null
+                            ? AppLocalizations.of(context)!.choose_time
+                            : currentTime!,
                         style: AppFonts.medium16Primary,
                       ),
                     ),
@@ -265,14 +267,21 @@ class _AddEventPageState extends State<AddEventPage> {
                   ),
                   onPress: () {
                     if (_formKey.currentState!.validate()) {
-                      FirebaseUtiles.eventRef.add(
-                        Event(title: titleController.text, description: descriptionController.text, category: titleList[currentIndex], image: imagesList[currentIndex], date: currentDate!, time: currentTime!)
+                      FirebaseUtiles.addEventToFireStore(
+                        Event(
+                          title: titleController.text,
+                          description: descriptionController.text,
+                          category: titleList[currentIndex],
+                          image: imagesList[currentIndex],
+                          date: currentDate!,
+                          time: currentTime!,
+                        ),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Event Added Successfully')),
                       );
                       Navigator.pop(context);
-                    }else{
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Can't Add Event")),
                       );

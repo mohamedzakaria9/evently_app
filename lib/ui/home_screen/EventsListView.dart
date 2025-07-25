@@ -1,22 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evently_app/FirebaseUtiles.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/utilites/AppColors.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/Event.dart';
+import '../../providers/EventsProvider.dart';
 import '../../utilites/AppFonts.dart';
 import '../../utilites/AppImages.dart';
 
-class EventsListView extends StatelessWidget {
-  const EventsListView({super.key});
+class EventsListView extends StatefulWidget {
+  EventsListView({super.key});
 
   @override
+  State<EventsListView> createState() => _EventsListViewState();
+}
+
+class _EventsListViewState extends State<EventsListView> {
+  @override
   Widget build(BuildContext context) {
+    var eventProvider = Provider.of<EventsProvider>(context);
+    if (eventProvider.events.isEmpty) {
+      eventProvider.getStoredEvents();
+    }
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var themeProvider = Provider.of<ThemeProvider>(context);
     return ListView.builder(
-      itemCount: 20,
+      itemCount: eventProvider.events.length,
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.symmetric(
@@ -28,7 +42,7 @@ class EventsListView extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: AppColors.appPrimaryColor),
             image: DecorationImage(
-              image: AssetImage(AppImages.sportImage),
+              image: AssetImage(eventProvider.events[index].image),
               fit: BoxFit.fill,
             ),
           ),
@@ -46,14 +60,18 @@ class EventsListView extends StatelessWidget {
                   horizontal: width * 0.015,
                 ),
                 decoration: BoxDecoration(
-                  color: themeProvider.appTheme == AppTheme.lightTheme ? AppColors.greyColor : Colors.transparent,
+                  color: themeProvider.appTheme == AppTheme.lightTheme
+                      ? AppColors.greyColor
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(10),
-
                 ),
                 child: Column(
                   children: [
-                    Text("21"),
-                    Text("Nov", style: AppFonts.bold14Primary),
+                    Text(DateFormat.d().format(eventProvider.events[index].date)),
+                    Text(
+                      DateFormat.MMM().format(eventProvider.events[index].date),
+                      style: AppFonts.bold14Primary,
+                    ),
                   ],
                 ),
               ),
@@ -67,7 +85,9 @@ class EventsListView extends StatelessWidget {
                   horizontal: width * 0.02,
                 ),
                 decoration: BoxDecoration(
-                  color: themeProvider.appTheme == AppTheme.lightTheme ? AppColors.greyColor : Colors.transparent,
+                  color: themeProvider.appTheme == AppTheme.lightTheme
+                      ? AppColors.greyColor
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(7),
                 ),
                 child: Row(
@@ -75,8 +95,10 @@ class EventsListView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        "Hello my dear friend",
-                        style: themeProvider.appTheme == AppTheme.lightTheme ? AppFonts.bold14Black : AppFonts.bold14White,
+                        eventProvider.events[index].title,
+                        style: themeProvider.appTheme == AppTheme.lightTheme
+                            ? AppFonts.bold14Black
+                            : AppFonts.bold14White,
                       ),
                     ),
                     ImageIcon(

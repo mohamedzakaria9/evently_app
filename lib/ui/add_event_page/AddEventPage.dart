@@ -1,4 +1,5 @@
 import 'package:date_picker_plus/date_picker_plus.dart';
+import 'package:evently_app/FirebaseUtiles.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
@@ -6,8 +7,8 @@ import 'package:evently_app/models/Event.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-import '../../fireBase_utiles/FirebaseUtiles.dart';
+import 'package:provider/provider.dart';
+import '../../providers/EventsProvider.dart';
 import '../../utilites/AppColors.dart';
 import '../../utilites/AppFonts.dart';
 
@@ -46,8 +47,10 @@ class _AddEventPageState extends State<AddEventPage> {
   final _formKey = GlobalKey<FormState>();
 
   int currentIndex = 0;
-  String? currentDate;
-  String? currentTime;
+  var currentDate;
+  var currentTime;
+  DateTime? date;
+  TimeOfDay? time;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
@@ -55,6 +58,7 @@ class _AddEventPageState extends State<AddEventPage> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    var eventsProvider = Provider.of<EventsProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -162,7 +166,7 @@ class _AddEventPageState extends State<AddEventPage> {
                     Spacer(),
                     InkWell(
                       onTap: () async {
-                        var date = await showDatePicker(
+                        date = await showDatePicker(
                           context: context,
                           firstDate: DateTime.now(),
                           lastDate: DateTime(2026, 1, 1),
@@ -170,7 +174,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         if (date == null) {
                           currentDate = null;
                         } else {
-                          currentDate = DateFormat.yMMMd().format(date);
+                          currentDate = DateFormat.yMMMd().format(date!);
                         }
                         setState(() {});
                       },
@@ -195,14 +199,23 @@ class _AddEventPageState extends State<AddEventPage> {
                     Spacer(),
                     InkWell(
                       onTap: () async {
-                        var time = await showTimePicker(
+                        print("this is the current time var before pick up: $time");
+                        time = await showTimePicker(
                           context: context,
                           initialTime: TimeOfDay.now(),
                         );
+                        print("this is the current time after the pick up $time");
                         if (time == null) {
                           currentTime = null;
                         } else {
-                          currentTime = "${time.hour} : ${time.minute}";
+                          print(
+                            "this is the current time var before : $currentTime",
+                          );
+                          currentTime =
+                              time!.format(context);
+                          print(
+                            "this is the current time var after : $currentTime",
+                          );
                         }
                         setState(() {});
                       },
@@ -267,24 +280,26 @@ class _AddEventPageState extends State<AddEventPage> {
                   ),
                   onPress: () {
                     if (_formKey.currentState!.validate()) {
-                      FirebaseUtiles.addEventToFireStore(
+                      // If the form is valid, display a snackbar. In the real world,
+                      // you'd often call a server or save the information in a database.
+                      FirebaseUtiles.addEvent(
                         Event(
                           title: titleController.text,
-                          description: descriptionController.text,
-                          category: titleList[currentIndex],
                           image: imagesList[currentIndex],
-                          date: currentDate!,
+                          category: titleList[currentIndex],
+                          description: descriptionController.text,
+                          date: date!,
                           time: currentTime!,
                         ),
                       );
+                      eventsProvider.getStoredEvents();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Event Added Successfully')),
+                        const SnackBar(
+                          content: Text('Event Added Successfully'),
+                          backgroundColor: AppColors.appPrimaryColor,
+                        ),
                       );
                       Navigator.pop(context);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Can't Add Event")),
-                      );
                     }
                   },
                 ),

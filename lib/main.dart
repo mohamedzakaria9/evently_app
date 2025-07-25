@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently_app/Routes.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/providers/EventsProvider.dart';
 import 'package:evently_app/providers/LanguageProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
@@ -31,6 +32,7 @@ void main() async{
       providers: [
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => EventsProvider())
       ],
       child: MyApp(),
     ),

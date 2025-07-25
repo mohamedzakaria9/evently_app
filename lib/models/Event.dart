@@ -1,48 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 class Event {
   String? id;
-  String title;
-  String category;
   String image;
+  String category;
+  String title;
   String description;
-  String date;
-  String time;
-  bool isFavorite;
+  DateTime date;
+  var time;
 
   Event({
     this.id,
+    required this.image,
+    required this.category,
     required this.title,
     required this.description,
-    this.isFavorite = false,
-    required this.category,
-    required this.image,
     required this.date,
     required this.time,
   });
 
-  // this method can change from json to our object model
-  Event.fromJson(Map<String, dynamic> json):this(
-    title : json['title'],
-    description : json['description'],
-    category : json['category'],
-    image : json['image'],
-    date : json['date'],
-    id : json['id'],
-    time : json['time'],
-    isFavorite : json['isFavorite'],
-  );
+  static fromJson(Map<String, dynamic> json) {
+    print("this is the date from the fromJson method: ${json['date']}");
+    return Event(
+      id: json['id'],
+      image: json['image'],
+      category: json['category'],
+      title: json['title'],
+      description: json['description'],
+      date: parseFlexibleDate(json['date']),
+      time: json['time'],
+    );
+  }
 
-  //this method change from out object model to the json format to be stored in the firestore
   Map<String, dynamic> toJson() {
+    print("this is the date from the toJson method: ${DateFormat.yMMMd().format(date)}");
     return {
+      "id": id,
+      "image": image,
+      "category": category,
       "title": title,
       "description": description,
-      "isFavorite": isFavorite,
-      "category": category,
-      "image": image,
-      "date": date,
+      "date": DateFormat.yMMMd().format(date),
       "time": time,
-      "id": id,
-      "favorite": isFavorite,
     };
+  }
+  static DateTime parseFlexibleDate(String input) {
+    try {
+      return DateFormat('MMMM d, y', 'en_US').parseStrict(input);
+    } catch (_) {
+      return DateFormat('MMM d, y', 'en_US').parseStrict(input);
+    }
   }
 }

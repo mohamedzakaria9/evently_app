@@ -1,4 +1,5 @@
-import 'package:evently_app/l10n/app_localizations.dart';
+
+import 'package:evently_app/providers/EventsProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/ui/home_screen/EventsListView.dart';
@@ -16,26 +17,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int currentIndex = 0;
 
   Widget build(BuildContext context) {
+    var eventProvider = Provider.of<EventsProvider>(context);
+    eventProvider.loadTitle(context);
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var themeProvider = Provider.of<ThemeProvider>(context);
-    List<String> data = [
-      AppLocalizations.of(context)!.all,
-      AppLocalizations.of(context)!.sport,
-      AppLocalizations.of(context)!.birthday,
-      AppLocalizations.of(context)!.meeting,
-      AppLocalizations.of(context)!.gaming,
-      AppLocalizations.of(context)!.workshop,
-      AppLocalizations.of(context)!.bookClub,
-      AppLocalizations.of(context)!.exhibition,
-      AppLocalizations.of(context)!.holiday,
-      AppLocalizations.of(context)!.eating,
-    ];
+
     return DefaultTabController(
-      length: data.length,
+      length: eventProvider.titles.length,
       child: Scaffold(
         //backgroundColor: AppColors.darkBackGroundColor,
         appBar: AppBar(
@@ -96,11 +87,11 @@ class _HomeScreenState extends State<HomeScreen> {
             dividerHeight: 0,
             indicatorColor: Colors.transparent,
             onTap: (index) {
-              currentIndex = index;
-              setState(() {});
+              eventProvider.setIndex(index);
+              eventProvider.getEvents();
             },
             labelPadding: EdgeInsets.symmetric(horizontal: width * 0.02),
-            tabs: data.map((e) {
+            tabs: eventProvider.titles.map((title) {
               return Tab(
                 child: Container(
                   margin: EdgeInsets.only(bottom: width * 0.01),
@@ -109,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     vertical: height * 0.003,
                   ),
                   decoration: BoxDecoration(
-                    color: currentIndex == data.indexOf(e)
+                    color: eventProvider.currentIndex == eventProvider.titles.indexOf(title)
                         ? themeProvider.appTheme == AppTheme.lightTheme
                               ? AppColors.whiteColor
                               : AppColors.appPrimaryColor
@@ -123,8 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    e,
-                    style: currentIndex == data.indexOf(e)
+                    title,
+                    style: eventProvider.currentIndex == eventProvider.titles.indexOf(title)
                         ? themeProvider.appTheme == AppTheme.lightTheme
                               ? AppFonts.medium16Primary
                               : AppFonts.medium16White

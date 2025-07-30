@@ -12,13 +12,13 @@ class FirebaseUtiles {
         );
   }
 
-  static void addEvent(Event event){
+  static void addEvent(Event event) async{
     try {
       var eventRef = getEvents();
       var eventDoc = eventRef.doc();
       event.id = eventDoc.id;
-      eventDoc.set(event);
       print("✅ Event added to Firebase successfully with ID: ${event.id}");
+      await eventDoc.set(event);
     } catch (e) {
       print("❌ Failed to add event: $e");
     }

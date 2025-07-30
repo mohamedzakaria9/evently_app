@@ -25,24 +25,14 @@ class _AddEventPageState extends State<AddEventPage> {
     AppImages.birthDayImage,
     AppImages.meetingImage,
     AppImages.gamingImage,
-    AppImages.eatingImage,
-    AppImages.holidayImage,
-    AppImages.exhibitionImage,
     AppImages.workshopImage,
     AppImages.bookClubImage,
+    AppImages.exhibitionImage,
+    AppImages.holidayImage,
+    AppImages.eatingImage,
   ];
 
-  List<String> titleList = [
-    "Sport",
-    "Birthday",
-    "Meeting",
-    "Gaming",
-    "Eating",
-    "Holiday",
-    "Exhibition",
-    "WorkShop",
-    "Book Club",
-  ];
+
 
   final _formKey = GlobalKey<FormState>();
 
@@ -56,6 +46,17 @@ class _AddEventPageState extends State<AddEventPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<String>titles =  [
+      AppLocalizations.of(context)!.sport,
+      AppLocalizations.of(context)!.birthday,
+      AppLocalizations.of(context)!.meeting,
+      AppLocalizations.of(context)!.gaming,
+      AppLocalizations.of(context)!.workshop,
+      AppLocalizations.of(context)!.bookClub,
+      AppLocalizations.of(context)!.exhibition,
+      AppLocalizations.of(context)!.holiday,
+      AppLocalizations.of(context)!.eating,
+    ];
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var eventsProvider = Provider.of<EventsProvider>(context);
@@ -105,12 +106,12 @@ class _AddEventPageState extends State<AddEventPage> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          titleList[index],
+                          titles[index],
                           style: AppFonts.bold16Primary,
                         ),
                       ),
                     ),
-                    itemCount: titleList.length,
+                    itemCount: titles.length,
                     scrollDirection: Axis.horizontal,
                   ),
                 ),
@@ -286,13 +287,13 @@ class _AddEventPageState extends State<AddEventPage> {
                         Event(
                           title: titleController.text,
                           image: imagesList[currentIndex],
-                          category: titleList[currentIndex],
+                          category: eventsProvider.titles[currentIndex+1],
                           description: descriptionController.text,
                           date: date!,
                           time: currentTime!,
                         ),
                       );
-                      eventsProvider.getStoredEvents();
+                      eventsProvider.getEvents();
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Event Added Successfully'),

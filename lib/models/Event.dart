@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Event {
@@ -21,7 +20,7 @@ class Event {
   });
 
   static fromJson(Map<String, dynamic> json) {
-    print("this is the date from the fromJson method: ${json['date']}");
+    //print("this is the date from the fromJson method: ${json['date']}");
     return Event(
       id: json['id'],
       image: json['image'],
@@ -34,7 +33,7 @@ class Event {
   }
 
   Map<String, dynamic> toJson() {
-    print("this is the date from the toJson method: ${DateFormat.yMMMd().format(date)}");
+    //print("this is the date from the toJson method: ${DateFormat.yMMMd().format(date)}");
     return {
       "id": id,
       "image": image,

@@ -1,13 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:evently_app/FirebaseUtiles.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/utilites/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
-import '../../models/Event.dart';
 import '../../providers/EventsProvider.dart';
 import '../../utilites/AppFonts.dart';
 import '../../utilites/AppImages.dart';
@@ -21,16 +17,28 @@ class EventsListView extends StatefulWidget {
 
 class _EventsListViewState extends State<EventsListView> {
   @override
+  void initState() {
+    super.initState();
+    final eventProvider = Provider.of<EventsProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (eventProvider.events.isEmpty) {
+        print("✅ Calling getEvents() from initState");
+        eventProvider.getEvents();
+      }
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     var eventProvider = Provider.of<EventsProvider>(context);
-    if (eventProvider.events.isEmpty) {
-      eventProvider.getStoredEvents();
-    }
+    // if (eventProvider.events.isEmpty) {
+    //   print("this is call for the getEvents from the Event List View");
+    //   eventProvider.getEvents();
+    // }
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var themeProvider = Provider.of<ThemeProvider>(context);
     return ListView.builder(
-      itemCount: eventProvider.events.length,
+      itemCount: eventProvider.selectedTitle.length,
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.symmetric(
@@ -42,7 +50,7 @@ class _EventsListViewState extends State<EventsListView> {
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: AppColors.appPrimaryColor),
             image: DecorationImage(
-              image: AssetImage(eventProvider.events[index].image),
+              image: AssetImage(eventProvider.selectedTitle[index].image),
               fit: BoxFit.fill,
             ),
           ),
@@ -67,9 +75,9 @@ class _EventsListViewState extends State<EventsListView> {
                 ),
                 child: Column(
                   children: [
-                    Text(DateFormat.d().format(eventProvider.events[index].date)),
+                    Text(DateFormat.d().format(eventProvider.selectedTitle[index].date)),
                     Text(
-                      DateFormat.MMM().format(eventProvider.events[index].date),
+                      DateFormat.MMM().format(eventProvider.selectedTitle[index].date),
                       style: AppFonts.bold14Primary,
                     ),
                   ],
@@ -95,7 +103,7 @@ class _EventsListViewState extends State<EventsListView> {
                   children: [
                     Expanded(
                       child: Text(
-                        eventProvider.events[index].title,
+                        eventProvider.selectedTitle[index].title,
                         style: themeProvider.appTheme == AppTheme.lightTheme
                             ? AppFonts.bold14Black
                             : AppFonts.bold14White,

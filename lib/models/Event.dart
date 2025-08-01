@@ -8,6 +8,7 @@ class Event {
   String description;
   DateTime date;
   var time;
+  bool isFavorite;
 
   Event({
     this.id,
@@ -17,6 +18,7 @@ class Event {
     required this.description,
     required this.date,
     required this.time,
+    this.isFavorite = false,
   });
 
   static fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class Event {
       description: json['description'],
       date: parseFlexibleDate(json['date']),
       time: json['time'],
+      isFavorite: json['isFavorite'],
     );
   }
 
@@ -42,6 +45,7 @@ class Event {
       "description": description,
       "date": DateFormat.yMMMd().format(date),
       "time": time,
+      "isFavorite": isFavorite
     };
   }
   static DateTime parseFlexibleDate(String input) {

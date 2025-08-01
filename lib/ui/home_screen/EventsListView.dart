@@ -4,22 +4,26 @@ import 'package:evently_app/utilites/AppColors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../models/Event.dart';
 import '../../providers/EventsProvider.dart';
 import '../../utilites/AppFonts.dart';
 import '../../utilites/AppImages.dart';
 
 class EventsListView extends StatefulWidget {
-  EventsListView({super.key});
-
+  bool favoritePage;
+  EventsListView({this.favoritePage = false});
   @override
   State<EventsListView> createState() => _EventsListViewState();
 }
 
 class _EventsListViewState extends State<EventsListView> {
+
+
+
   @override
   void initState() {
     super.initState();
-    final eventProvider = Provider.of<EventsProvider>(context, listen: false);
+    final eventProvider = Provider.of<EventsProvider>(context,listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (eventProvider.events.isEmpty) {
         print("✅ Calling getEvents() from initState");
@@ -27,18 +31,16 @@ class _EventsListViewState extends State<EventsListView> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     var eventProvider = Provider.of<EventsProvider>(context);
-    // if (eventProvider.events.isEmpty) {
-    //   print("this is call for the getEvents from the Event List View");
-    //   eventProvider.getEvents();
-    // }
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var themeProvider = Provider.of<ThemeProvider>(context);
+    List<Event> events = widget.favoritePage ? eventProvider.favoriteEvents : eventProvider.selectedTitle;
     return ListView.builder(
-      itemCount: eventProvider.selectedTitle.length,
+      itemCount:  events.length,
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.symmetric(
@@ -50,7 +52,7 @@ class _EventsListViewState extends State<EventsListView> {
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: AppColors.appPrimaryColor),
             image: DecorationImage(
-              image: AssetImage(eventProvider.selectedTitle[index].image),
+              image: AssetImage(events[index].image),
               fit: BoxFit.fill,
             ),
           ),
@@ -75,9 +77,15 @@ class _EventsListViewState extends State<EventsListView> {
                 ),
                 child: Column(
                   children: [
-                    Text(DateFormat.d().format(eventProvider.selectedTitle[index].date)),
                     Text(
-                      DateFormat.MMM().format(eventProvider.selectedTitle[index].date),
+                      DateFormat.d().format(
+                        events[index].date,
+                      ),
+                    ),
+                    Text(
+                      DateFormat.MMM().format(
+                        events[index].date,
+                      ),
                       style: AppFonts.bold14Primary,
                     ),
                   ],
@@ -103,16 +111,27 @@ class _EventsListViewState extends State<EventsListView> {
                   children: [
                     Expanded(
                       child: Text(
-                        eventProvider.selectedTitle[index].title,
+                        events[index].title,
                         style: themeProvider.appTheme == AppTheme.lightTheme
                             ? AppFonts.bold14Black
                             : AppFonts.bold14White,
                       ),
                     ),
-                    ImageIcon(
-                      AssetImage(AppImages.heartIcon),
-                      color: AppColors.appPrimaryColor,
-                      size: 35,
+                    InkWell(
+                      onTap: () {
+                        eventProvider.addFavorite(events[index],context);
+                      },
+                      child: events[index].isFavorite
+                          ? ImageIcon(
+                              AssetImage(AppImages.favoriteIconFilled),
+                              color: AppColors.appPrimaryColor,
+                              size: 35,
+                            )
+                          : ImageIcon(
+                              AssetImage(AppImages.heartIcon),
+                              color: AppColors.appPrimaryColor,
+                              size: 35,
+                            ),
                     ),
                   ],
                 ),

@@ -30,4 +30,5 @@ class AppImages{
   static const String eventTimeIcon = "assets/images/EventTimeIcon.png";
   static const String locationIcon = "assets/images/LocationIcon.png";
   static const String titleIcon = "assets/images/TitleIcon.png";
+  static const String favoriteIconFilled = "assets/images/FavoriteIconFilled.png";
 }

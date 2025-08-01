@@ -30,7 +30,7 @@ class FavoritesScreen extends StatelessWidget {
                 },
               ),
             ),
-            Expanded(child: EventsListView()),
+            Expanded(child: EventsListView(favoritePage: true,)),
           ],
         ),
       ),

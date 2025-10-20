@@ -1,3 +1,4 @@
+import 'package:evently_app/Routes.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/LanguageProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
@@ -6,6 +7,7 @@ import 'package:evently_app/ui/profileTap/BottomSheetLanguageStyle.dart';
 import 'package:evently_app/ui/profileTap/LanguageContainer.dart';
 import 'package:evently_app/utilites/AppFonts.dart';
 import 'package:evently_app/utilites/AppImages.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -114,15 +116,22 @@ class _ProfileTapState extends State<ProfileTap> {
                         padding: EdgeInsets.symmetric(vertical: height*0.01,horizontal: width*0.04),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))
                       ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.logout_outlined,
-                            color: AppColors.whiteColor,
-                          ),
-                          SizedBox(width: width * 0.02),
-                          Text("Logout", style: AppFonts.regular20White),
-                        ],
+                      child: InkWell(
+                        onTap: ()async{
+                          await FirebaseAuth.instance.signOut();
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, Routes.LoginScreen);
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.logout_outlined,
+                              color: AppColors.whiteColor,
+                            ),
+                            SizedBox(width: width * 0.02),
+                            Text("Logout", style: AppFonts.regular20White),
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(height: height*0.04,)

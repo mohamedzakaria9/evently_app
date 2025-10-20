@@ -4,8 +4,11 @@ import 'package:evently_app/models/CustomTextFormField.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/utilites/AppImages.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../Routes.dart';
 import '../../../utilites/AppColors.dart';
@@ -25,6 +28,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Form(
       key: _formKey,
@@ -37,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Image.asset(AppImages.appLogo, height: height * 0.3),
                 Customtextformfield(
+                  textEditingController: emailController,
                   prefixIcon: AppImages.emailIcon,
                   labelText: AppLocalizations.of(context)!.email,
                   validate: (text) {
@@ -52,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: height * 0.03),
                 Customtextformfield(
+                  textEditingController: passwordController,
                   prefixIcon: AppImages.passwordIcon,
                   labelText: AppLocalizations.of(context)!.password,
                   isSuffixIcon: true,
@@ -81,9 +88,42 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: height * 0.01),
                 CustomElevatedButton(
-                  onPress: () {
+                  onPress: () async {
+                    QuickAlert.show(
+                      context: context,
+                      type: QuickAlertType.loading,
+                      title: 'Loading',
+                      text: 'Fetching your data',
+                    );
                     if (_formKey.currentState!.validate()) {
-                      Navigator.popAndPushNamed(context, Routes.Home);
+                      try {
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        );
+                        Navigator.pop(context);
+                        if (context.mounted) {
+                          Navigator.popAndPushNamed(context, Routes.Home);
+                        }
+                      } on FirebaseAuthException {
+                        if (context.mounted) {
+                          QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.error,
+                            title: "Error",
+                            text: "Invalid email or password",
+                          );
+                        }
+                      } catch (e) {
+                        if (context.mounted) {
+                          QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.error,
+                            title: "Error",
+                            text: "Unknown Error",
+                          );
+                        }
+                      }
                     }
                   },
                   content: Text(
@@ -97,11 +137,13 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Text(
                       "${AppLocalizations.of(context)!.do_not_have_an_account}?",
-                      style: themeProvider.appTheme == AppTheme.lightTheme ? AppFonts.medium16Black : AppFonts.medium16White,
+                      style: themeProvider.appTheme == AppTheme.lightTheme
+                          ? AppFonts.medium16Black
+                          : AppFonts.medium16White,
                     ),
                     SizedBox(width: width * 0.01),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pushNamed(context, Routes.SignUpScreen);
                       },
                       child: Text(
@@ -146,8 +188,11 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(AppImages.googleIcon),
-                      SizedBox(width: width*0.02,),
-                      Text(AppLocalizations.of(context)!.login_with_google,style: AppFonts.medium20Primary,),
+                      SizedBox(width: width * 0.02),
+                      Text(
+                        AppLocalizations.of(context)!.login_with_google,
+                        style: AppFonts.medium20Primary,
+                      ),
                     ],
                   ),
                   onPress: () {},

@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
       locale: Locale(provider.localeLanguage),
       supportedLocales: [Locale("en"), Locale("ar")],
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.Home,
+      initialRoute: Routes.LoginScreen,
       routes: {
         Routes.Home: (context) => Home(),
         Routes.HomeScreen: (context) => HomeScreen(),

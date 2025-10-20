@@ -3,8 +3,11 @@ import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/utilites/AppImages.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../../theme/AppTheme.dart';
 import '../../../utilites/AppColors.dart';
 import '../../../utilites/AppFonts.dart';
@@ -19,6 +22,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController passwordTextEditingControler = TextEditingController();
+  TextEditingController emailTextEditingControler = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           centerTitle: true,
           leading: InkWell(
-            onTap: (){
+            onTap: () {
               Navigator.pop(context);
             },
             child: Icon(
@@ -64,6 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               SizedBox(height: height * 0.02),
               Customtextformfield(
+                textEditingController: emailTextEditingControler,
                 prefixIcon: AppImages.emailIcon,
                 labelText: AppLocalizations.of(context)!.email,
                 validate: (text) {
@@ -110,9 +115,52 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               SizedBox(height: height * 0.02),
               CustomElevatedButton(
-                onPress: () {
+                onPress: () async {
                   if (_formKey.currentState!.validate()) {
-                    Navigator.pop(context);
+                    try {
+                      await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                            email: emailTextEditingControler.text,
+                            password: passwordTextEditingControler.text,
+                          );
+                      if (context.mounted) {
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.success,
+                          text: 'Email Created Successfully!',
+                          onConfirmBtnTap: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                        );
+                        //Navigator.pop(context);
+                      }
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.error,
+                          title: "Oops...",
+                          text: "Weak Password"
+                        );
+                        //print('The password provided is too weak.');
+                      } else if (e.code == 'email-already-in-use') {
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.error,
+                          title: 'Oops...',
+                          text: 'The account already exists for that email.',
+                        );
+                      }
+                    } catch (e) {
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.error,
+                        title: 'Oops...',
+                        text: "Error can't Ereate Email",
+                      );
+                      print(e.toString());
+                    }
                   }
                 },
                 content: Text(

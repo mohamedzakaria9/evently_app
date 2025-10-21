@@ -21,6 +21,7 @@ class Customtextformfield extends StatelessWidget {
   validation validate;
   TextEditingController? textEditingController;
   int? maxLines;
+  GestureTapCallback? suffixIconOnPress;
   Customtextformfield({
     this.borderColor = AppColors.darkGery,
     required this.prefixIcon,
@@ -32,7 +33,8 @@ class Customtextformfield extends StatelessWidget {
     this.password = false,
     required this.validate,
     this.textEditingController,
-    this.maxLines
+    this.maxLines,
+    this.suffixIconOnPress
   });
 
   @override
@@ -85,11 +87,14 @@ class Customtextformfield extends StatelessWidget {
               : labelTextStyle,
         ),
         suffixIcon: isSuffixIcon
-            ? ImageIcon(
-                AssetImage(suffixIcon!),
-                color: themeProvider.appTheme == AppTheme.lightTheme
-                    ? prefixIconColor
-                    : AppColors.whiteColor,
+            ? InkWell(
+          onTap: suffixIconOnPress,
+                child: ImageIcon(
+                  AssetImage(suffixIcon!),
+                  color: themeProvider.appTheme == AppTheme.lightTheme
+                      ? prefixIconColor
+                      : AppColors.whiteColor,
+                ),
               )
             : null,
       ),

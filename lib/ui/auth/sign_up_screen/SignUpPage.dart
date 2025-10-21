@@ -1,6 +1,7 @@
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
+import 'package:evently_app/providers/ShowHidePasswordProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,34 +84,44 @@ class _SignUpPageState extends State<SignUpPage> {
                 },
               ),
               SizedBox(height: height * 0.02),
-              Customtextformfield(
-                textEditingController: passwordTextEditingControler,
-                prefixIcon: AppImages.passwordIcon,
-                labelText: AppLocalizations.of(context)!.password,
-                isSuffixIcon: true,
-                suffixIcon: AppImages.showHidePasswordIcon,
-                password: true,
-                validate: (text) {
-                  if (text!.length < 6) {
-                    return "The password must be at least 6 characters";
-                  } else {
-                    return null;
-                  }
+              Consumer<ShowHidePasswordProvider>(
+                builder: (context, showHidePasswordProvider, child) {
+                  return Customtextformfield(
+                    textEditingController: passwordTextEditingControler,
+                    prefixIcon: AppImages.passwordIcon,
+                    labelText: AppLocalizations.of(context)!.password,
+                    isSuffixIcon: true,
+                    suffixIconOnPress: showHidePasswordProvider.showHidePassword,
+                    suffixIcon: AppImages.showHidePasswordIcon,
+                    password: showHidePasswordProvider.isPassword,
+                    validate: (text) {
+                      if (text!.length < 6) {
+                        return "The password must be at least 6 characters";
+                      } else {
+                        return null;
+                      }
+                    },
+                  );
                 },
               ),
               SizedBox(height: height * 0.02),
-              Customtextformfield(
-                prefixIcon: AppImages.passwordIcon,
-                labelText: AppLocalizations.of(context)!.re_Password,
-                isSuffixIcon: true,
-                suffixIcon: AppImages.showHidePasswordIcon,
-                password: true,
-                validate: (text) {
-                  if (passwordTextEditingControler.text != text) {
-                    return "Password don't match";
-                  } else {
-                    return null;
-                  }
+              Consumer<ShowHidePasswordProvider>(
+                builder: (context, showHidePasswordProvider, child) {
+                  return Customtextformfield(
+                    prefixIcon: AppImages.passwordIcon,
+                    labelText: AppLocalizations.of(context)!.re_Password,
+                    isSuffixIcon: true,
+                    suffixIcon: AppImages.showHidePasswordIcon,
+                    suffixIconOnPress: showHidePasswordProvider.showHidePassword,
+                    password: showHidePasswordProvider.isPassword,
+                    validate: (text) {
+                      if (passwordTextEditingControler.text != text) {
+                        return "Password don't match";
+                      } else {
+                        return null;
+                      }
+                    },
+                  );
                 },
               ),
               SizedBox(height: height * 0.02),

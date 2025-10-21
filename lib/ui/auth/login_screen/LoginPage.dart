@@ -1,6 +1,7 @@
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
+import 'package:evently_app/providers/ShowHidePasswordProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/utilites/AppImages.dart';
@@ -23,14 +24,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
     var themeProvider = Provider.of<ThemeProvider>(context);
+    //print("this is print from the build method");
     return Form(
       key: _formKey,
       child: Scaffold(
@@ -57,19 +58,25 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
                 SizedBox(height: height * 0.03),
-                Customtextformfield(
-                  textEditingController: passwordController,
-                  prefixIcon: AppImages.passwordIcon,
-                  labelText: AppLocalizations.of(context)!.password,
-                  isSuffixIcon: true,
-                  suffixIcon: AppImages.showHidePasswordIcon,
-                  password: true,
-                  validate: (text) {
-                    if (text!.length < 6) {
-                      return "The password must be at least 6 characters";
-                    } else {
-                      return null;
-                    }
+                Consumer<ShowHidePasswordProvider>(
+                  builder: (context, showHidePasswordProvider, child) {
+                    print("this is print from the consumer of the password provider");
+                    return Customtextformfield(
+                      textEditingController: passwordController,
+                      prefixIcon: AppImages.passwordIcon,
+                      labelText: AppLocalizations.of(context)!.password,
+                      isSuffixIcon: true,
+                      suffixIcon: AppImages.showHidePasswordIcon,
+                      suffixIconOnPress: showHidePasswordProvider.showHidePassword,
+                      password: showHidePasswordProvider.isPassword,
+                      validate: (text) {
+                        if (text!.length < 6) {
+                          return "The password must be at least 6 characters";
+                        } else {
+                          return null;
+                        }
+                      },
+                    );
                   },
                 ),
                 SizedBox(height: height * 0.01),

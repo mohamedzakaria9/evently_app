@@ -3,6 +3,7 @@ import 'package:evently_app/Routes.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/providers/EventsProvider.dart';
 import 'package:evently_app/providers/LanguageProvider.dart';
+import 'package:evently_app/providers/ShowHidePasswordProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/ui/add_event_page/AddEventPage.dart';
@@ -32,7 +33,8 @@ void main() async{
       providers: [
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => EventsProvider())
+        ChangeNotifierProvider(create: (_) => EventsProvider()),
+        ChangeNotifierProvider(create: (_) => ShowHidePasswordProvider(),)
       ],
       child: MyApp(),
     ),

@@ -26,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -60,14 +61,17 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: height * 0.03),
                 Consumer<ShowHidePasswordProvider>(
                   builder: (context, showHidePasswordProvider, child) {
-                    print("this is print from the consumer of the password provider");
+                    print(
+                      "this is print from the consumer of the password provider",
+                    );
                     return Customtextformfield(
                       textEditingController: passwordController,
                       prefixIcon: AppImages.passwordIcon,
                       labelText: AppLocalizations.of(context)!.password,
                       isSuffixIcon: true,
                       suffixIcon: AppImages.showHidePasswordIcon,
-                      suffixIconOnPress: showHidePasswordProvider.showHidePassword,
+                      suffixIconOnPress:
+                          showHidePasswordProvider.showHidePassword,
                       password: showHidePasswordProvider.isPassword,
                       validate: (text) {
                         if (text!.length < 6) {
@@ -96,24 +100,26 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: height * 0.01),
                 CustomElevatedButton(
                   onPress: () async {
-                    QuickAlert.show(
-                      context: context,
-                      type: QuickAlertType.loading,
-                      title: 'Loading',
-                      text: 'Fetching your data',
-                    );
                     if (_formKey.currentState!.validate()) {
                       try {
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: emailController.text,
-                          password: passwordController.text,
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.loading,
+                          title: 'Loading',
+                          text: 'Fetching your data',
                         );
+                        var credentials = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            );
                         Navigator.pop(context);
                         if (context.mounted) {
                           Navigator.popAndPushNamed(context, Routes.Home);
                         }
                       } on FirebaseAuthException {
                         if (context.mounted) {
+                          Navigator.pop(context);
                           QuickAlert.show(
                             context: context,
                             type: QuickAlertType.error,
@@ -123,6 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       } catch (e) {
                         if (context.mounted) {
+                          Navigator.pop(context);
                           QuickAlert.show(
                             context: context,
                             type: QuickAlertType.error,

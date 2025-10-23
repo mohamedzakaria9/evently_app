@@ -14,12 +14,10 @@ class EventsProvider extends ChangeNotifier {
   int currentIndex = 0;
   List<String> titles = [];
 
-  void getStoredEvents() async {
+  Future<void> getStoredEvents({bool shouldNotify = true}) async {
     var eventsCollection = FirebaseUtiles.getEvents();
     QuerySnapshot<Event> eventsDocs = await eventsCollection.get();
     events = eventsDocs.docs.map((event) {
-      //event.doc.data()!.date = DateFormat('MMM d, y', 'en_US').parse(event.doc.data()!.date);
-      // print("this is the time of the event : ${event.doc.data()!.time}");
       print(DateFormat.MMM().format(event.data().date));
       print(event.data().date.runtimeType);
       return event.data();
@@ -32,43 +30,57 @@ class EventsProvider extends ChangeNotifier {
     selectedTitle = events;
     //favoriteEvents.removeRange(0, favoriteEvents.length-1);
     favoriteEvents.clear();
-    for(var event in events){
-      if(event.isFavorite){
+    for (var event in events) {
+      if (event.isFavorite) {
         favoriteEvents.add(event);
       }
     }
     if (events.isEmpty) {
-      print("i didn't find any thing");
+      //print("i didn't find any thing");
     } else {
-      notifyListeners();
+      if(shouldNotify){
+        notifyListeners();
+      }
     }
   }
 
-  void getEventCategory() {
-    //print("this is after call the get Stored evetns from the get event category");
-    printEventsList(events);
+  void getEventCategory() async {
+    await getStoredEvents(shouldNotify: false);
     selectedTitle = events
         .where((element) => element.category == titles[currentIndex])
         .toList();
-    //print("this is from select category");
-    //printEventsList(events);
+
     notifyListeners();
   }
 
   void getEvents() {
-    //print("this is the current index for the $currentIndex");
+    // print("this is print from the get Events function");
+    // print("this is the current index for the $currentIndex");
     currentIndex == 0 ? getStoredEvents() : getEventCategory();
   }
 
-  void addFavorite(Event event,BuildContext context) {
+  void addFavorite(Event event, BuildContext context) async{
     CollectionReference events = FirebaseUtiles.getEvents();
-    events
+    await events
         .doc(event.id)
         .update({"isFavorite": !event.isFavorite})
+        .then((value) {
+          //Duration(milliseconds: 500);
+
+            // print("this is the print from the add favorite in the then function");
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Event Updated Successfully'),
+                backgroundColor: AppColors.appPrimaryColor,
+              ),
+            );
+
+        })
         .timeout(
-          Duration(milliseconds: 500),
+          Duration(milliseconds: 3000),
           onTimeout: () {
-            if(context.mounted){
+            if (context.mounted) {
+              // print("this is the print from the add favorite in the timeout function");
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Event Updated Successfully'),
@@ -78,8 +90,13 @@ class EventsProvider extends ChangeNotifier {
             }
           },
         );
-    getEvents();
-
+    if(currentIndex == 0){
+      getStoredEvents();
+    }else{
+      // print("this is the print from the else condition in the add favorite before call");
+      getEventCategory();
+      // print("this is the print from the else condition in the add favorite after call");
+    }
   }
 
   void setIndex(index) {

@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
             indicatorColor: Colors.transparent,
             onTap: (index) {
               eventProvider.setIndex(index);
-              eventProvider.getEvents();
+              eventProvider.getEvents(allowLoading: true);
             },
             labelPadding: EdgeInsets.symmetric(horizontal: width * 0.02),
             tabs: eventProvider.titles.map((title) {

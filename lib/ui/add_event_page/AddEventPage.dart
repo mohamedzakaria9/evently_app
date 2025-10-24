@@ -293,7 +293,7 @@ class _AddEventPageState extends State<AddEventPage> {
                           time: currentTime!,
                         ),
                       );
-                      eventsProvider.getEvents();
+                      eventsProvider.getEvents(allowLoading: true);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Event Added Successfully'),

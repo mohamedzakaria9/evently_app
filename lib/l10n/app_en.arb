@@ -45,6 +45,6 @@
   "location": "Location",
   "add_event": "Add Event",
   "choose_date": "Choose Date",
-  "choose_time": "Choose Time"
-
+  "choose_time": "Choose Time",
+  "no_data_found": "No Data Found"
 }

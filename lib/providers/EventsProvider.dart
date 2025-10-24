@@ -13,6 +13,7 @@ class EventsProvider extends ChangeNotifier {
   List<Event> favoriteEvents = [];
   int currentIndex = 0;
   List<String> titles = [];
+  bool isLoading = false;
 
   Future<void> getStoredEvents({bool shouldNotify = true}) async {
     var eventsCollection = FirebaseUtiles.getEvents();
@@ -44,19 +45,30 @@ class EventsProvider extends ChangeNotifier {
     }
   }
 
-  void getEventCategory() async {
+  Future<void> getEventCategory({required bool allowLoading}) async {
+    isLoading = allowLoading;
+    notifyListeners();
     await getStoredEvents(shouldNotify: false);
     selectedTitle = events
         .where((element) => element.category == titles[currentIndex])
         .toList();
 
+    isLoading = false;
     notifyListeners();
   }
 
-  void getEvents() {
+  void getEvents({required bool allowLoading}) async{
+    isLoading = allowLoading;
+    notifyListeners();
     // print("this is print from the get Events function");
     // print("this is the current index for the $currentIndex");
-    currentIndex == 0 ? getStoredEvents() : getEventCategory();
+    if(currentIndex == 0){
+      await getStoredEvents();
+    }else{
+      await getEventCategory(allowLoading: true);
+    }
+    isLoading = false;
+    notifyListeners();
   }
 
   void addFavorite(Event event, BuildContext context) async{
@@ -94,7 +106,7 @@ class EventsProvider extends ChangeNotifier {
       getStoredEvents();
     }else{
       // print("this is the print from the else condition in the add favorite before call");
-      getEventCategory();
+      getEventCategory(allowLoading: false);
       // print("this is the print from the else condition in the add favorite after call");
     }
   }

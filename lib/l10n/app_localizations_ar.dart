@@ -148,4 +148,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get choose_time => 'أختر وقت';
+
+  @override
+  String get no_data_found => 'لا يوجد بيانات';
 }

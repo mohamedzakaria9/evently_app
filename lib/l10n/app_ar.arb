@@ -45,5 +45,6 @@
   "location": "الموقع",
   "add_event": "إضافة حدث",
   "choose_date": "أختر تاريخ",
-  "choose_time": "أختر وقت"
+  "choose_time": "أختر وقت",
+  "no_data_found": "لا يوجد بيانات"
 }

@@ -379,6 +379,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose Time'**
   String get choose_time;
+
+  /// No description provided for @no_data_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No Data Found'**
+  String get no_data_found;
 }
 
 class _AppLocalizationsDelegate

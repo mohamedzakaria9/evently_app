@@ -1,4 +1,3 @@
-import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:evently_app/FirebaseUtiles.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/CustomElevatedButton.dart';
@@ -8,6 +7,7 @@ import 'package:evently_app/utilites/AppImages.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../models/LocalUser.dart';
 import '../../providers/EventsProvider.dart';
 import '../../utilites/AppColors.dart';
 import '../../utilites/AppFonts.dart';
@@ -292,8 +292,9 @@ class _AddEventPageState extends State<AddEventPage> {
                           date: date!,
                           time: currentTime!,
                         ),
+                        LocalUser.uId!
                       );
-                      eventsProvider.getEvents(allowLoading: true);
+                      eventsProvider.getEvents(allowLoading: true,uId: LocalUser.uId!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Event Added Successfully'),

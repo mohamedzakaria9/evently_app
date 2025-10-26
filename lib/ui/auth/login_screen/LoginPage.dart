@@ -203,6 +203,7 @@ class _LoginPageState extends State<LoginPage> {
           await UserSharedPreferance.setLoggingStatus(true);
           LocalUser.name = user.name;
           LocalUser.email = user.email;
+          LocalUser.uId = user.id;
           Navigator.pop(context);
           if (context.mounted) {
             Navigator.popAndPushNamed(context, Routes.Home);

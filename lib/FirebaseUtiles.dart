@@ -3,9 +3,9 @@ import 'package:evently_app/models/Event.dart';
 import 'package:evently_app/models/User.dart';
 
 class FirebaseUtiles {
-  static CollectionReference<Event> getEvents() {
+  static CollectionReference<Event> getEvents(String uId) {
     return FirebaseFirestore.instance
-        .collection("Events")
+        .collection("Users").doc(uId).collection("Events")
         .withConverter<Event>(
           fromFirestore: (snapshot, options) =>
               Event.fromJson(snapshot.data()!),
@@ -13,9 +13,9 @@ class FirebaseUtiles {
         );
   }
 
-  static void addEvent(Event event) async {
+  static void addEvent(Event event,String uId) async {
     try {
-      var eventRef = getEvents();
+      var eventRef = getEvents(uId);
       var eventDoc = eventRef.doc();
       event.id = eventDoc.id;
       print("✅ Event added to Firebase successfully with ID: ${event.id}");

@@ -2,7 +2,6 @@
 import 'package:evently_app/models/LocalUser.dart';
 import 'package:evently_app/providers/EventsProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
-import 'package:evently_app/sharedPreferance/UserSharedPreferance.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/ui/home_screen/EventsListView.dart';
 import 'package:evently_app/utilites/AppColors.dart';
@@ -87,11 +86,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
           bottom: TabBar(
+
             dividerHeight: 0,
             indicatorColor: Colors.transparent,
             onTap: (index) {
               eventProvider.setIndex(index);
-              eventProvider.getEvents(allowLoading: true);
+              eventProvider.getEvents(allowLoading: true,uId: LocalUser.uId!);
             },
             labelPadding: EdgeInsets.symmetric(horizontal: width * 0.02),
             tabs: eventProvider.titles.map((title) {

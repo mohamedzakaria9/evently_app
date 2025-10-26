@@ -1,4 +1,5 @@
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/models/LocalUser.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/utilites/AppColors.dart';
@@ -27,7 +28,7 @@ class _EventsListViewState extends State<EventsListView> {
     final eventProvider = Provider.of<EventsProvider>(context,listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (eventProvider.events.isEmpty) {
-        eventProvider.getEvents(allowLoading: true);
+        eventProvider.getEvents(allowLoading: true,uId: LocalUser.uId!);
       }
     });
   }
@@ -135,7 +136,7 @@ class _EventsListViewState extends State<EventsListView> {
                       ),
                       InkWell(
                         onTap: () {
-                          eventProvider.addFavorite(events[index],context);
+                          eventProvider.addFavorite(events[index],context,uId: LocalUser.uId!);
                         },
                         child: events[index].isFavorite
                             ? ImageIcon(

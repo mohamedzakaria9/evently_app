@@ -15,8 +15,8 @@ class EventsProvider extends ChangeNotifier {
   List<String> titles = [];
   bool isLoading = false;
 
-  Future<void> getStoredEvents({bool shouldNotify = true}) async {
-    var eventsCollection = FirebaseUtiles.getEvents();
+  Future<void> getStoredEvents({bool shouldNotify = true,required String uId}) async {
+    var eventsCollection = FirebaseUtiles.getEvents(uId);
     QuerySnapshot<Event> eventsDocs = await eventsCollection.get();
     events = eventsDocs.docs.map((event) {
       print(DateFormat.MMM().format(event.data().date));
@@ -45,10 +45,10 @@ class EventsProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getEventCategory({required bool allowLoading}) async {
+  Future<void> getEventCategory({required bool allowLoading,required String uId}) async {
     isLoading = allowLoading;
     notifyListeners();
-    await getStoredEvents(shouldNotify: false);
+    await getStoredEvents(shouldNotify: false,uId: uId);
     selectedTitle = events
         .where((element) => element.category == titles[currentIndex])
         .toList();
@@ -57,22 +57,22 @@ class EventsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getEvents({required bool allowLoading}) async{
+  void getEvents({required bool allowLoading, required String uId}) async{
     isLoading = allowLoading;
     notifyListeners();
     // print("this is print from the get Events function");
     // print("this is the current index for the $currentIndex");
     if(currentIndex == 0){
-      await getStoredEvents();
+      await getStoredEvents(uId: uId);
     }else{
-      await getEventCategory(allowLoading: true);
+      await getEventCategory(allowLoading: true, uId: uId);
     }
     isLoading = false;
     notifyListeners();
   }
 
-  void addFavorite(Event event, BuildContext context) async{
-    CollectionReference events = FirebaseUtiles.getEvents();
+  void addFavorite(Event event, BuildContext context,{required String uId}) async{
+    CollectionReference events = FirebaseUtiles.getEvents(uId);
     await events
         .doc(event.id)
         .update({"isFavorite": !event.isFavorite})
@@ -103,10 +103,10 @@ class EventsProvider extends ChangeNotifier {
           },
         );
     if(currentIndex == 0){
-      getStoredEvents();
+      getStoredEvents(uId: uId);
     }else{
       // print("this is the print from the else condition in the add favorite before call");
-      getEventCategory(allowLoading: false);
+      getEventCategory(allowLoading: false,uId: uId);
       // print("this is the print from the else condition in the add favorite after call");
     }
   }
@@ -138,5 +138,16 @@ class EventsProvider extends ChangeNotifier {
       print("this is the category of the event : ${element.category}");
       print("this is the favorite state of the event : ${element.isFavorite}");
     }
+  }
+
+
+  void clearData(){
+    events = [];
+    selectedTitle = [];
+    favoriteEvents = [];
+    currentIndex = 0;
+    titles = [];
+    isLoading = false;
+    notifyListeners();
   }
 }

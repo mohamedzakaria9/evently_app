@@ -8,6 +8,8 @@ import 'package:evently_app/utilites/AppFonts.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/EventsProvider.dart';
 import '../../utilites/AppColors.dart';
 import 'BottomSheetThemeStyle.dart';
 import 'ThemeContainer.dart';
@@ -117,8 +119,12 @@ class _ProfileTapState extends State<ProfileTap> {
                         onTap: ()async{
                           await FirebaseAuth.instance.signOut();
                           await UserSharedPreferance.setLoggingStatus(false);
+                          final eventProvider = Provider.of<EventsProvider>(context, listen: false);
+                          eventProvider.clearData();
                           Navigator.pop(context);
-                          Navigator.pushNamed(context, Routes.LoginScreen);
+                          Navigator.pushNamedAndRemoveUntil(context, Routes.LoginScreen,(route) {
+                            return false;
+                          },);
                         },
                         child: Row(
                           children: [

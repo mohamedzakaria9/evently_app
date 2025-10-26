@@ -1,16 +1,13 @@
 import 'package:evently_app/Routes.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
-import 'package:evently_app/providers/LanguageProvider.dart';
-import 'package:evently_app/providers/ThemeProvider.dart';
-import 'package:evently_app/theme/AppTheme.dart';
+import 'package:evently_app/models/LocalUser.dart';
+import 'package:evently_app/sharedPreferance/UserSharedPreferance.dart';
 import 'package:evently_app/ui/profileTap/BottomSheetLanguageStyle.dart';
 import 'package:evently_app/ui/profileTap/LanguageContainer.dart';
 import 'package:evently_app/utilites/AppFonts.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../../utilites/AppColors.dart';
 import 'BottomSheetThemeStyle.dart';
 import 'ThemeContainer.dart';
@@ -55,12 +52,12 @@ class _ProfileTapState extends State<ProfileTap> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "John Safwat",
+                          LocalUser.name ?? "Can't load name",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                         SizedBox(height: height*0.005,),
                         Text(
-                          "johnsafwat.route@gmail.com",
+                          LocalUser.email ?? "Can't load email",
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -119,6 +116,7 @@ class _ProfileTapState extends State<ProfileTap> {
                       child: InkWell(
                         onTap: ()async{
                           await FirebaseAuth.instance.signOut();
+                          await UserSharedPreferance.setLoggingStatus(false);
                           Navigator.pop(context);
                           Navigator.pushNamed(context, Routes.LoginScreen);
                         },

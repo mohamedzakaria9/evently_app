@@ -1,3 +1,4 @@
+import 'package:evently_app/FirebaseUtiles.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
@@ -12,6 +13,7 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../../theme/AppTheme.dart';
 import '../../../utilites/AppColors.dart';
 import '../../../utilites/AppFonts.dart';
+import 'package:evently_app/models/User.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -24,6 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController passwordTextEditingControler = TextEditingController();
   TextEditingController emailTextEditingControler = TextEditingController();
+  TextEditingController nameTextEditingControler = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Customtextformfield(
                 prefixIcon: AppImages.userNameIcon,
                 labelText: AppLocalizations.of(context)!.name,
+                textEditingController: nameTextEditingControler,
                 validate: (text) {
                   return null;
                 },
@@ -91,7 +95,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     prefixIcon: AppImages.passwordIcon,
                     labelText: AppLocalizations.of(context)!.password,
                     isSuffixIcon: true,
-                    suffixIconOnPress: showHidePasswordProvider.showHidePassword,
+                    suffixIconOnPress:
+                        showHidePasswordProvider.showHidePassword,
                     suffixIcon: AppImages.showHidePasswordIcon,
                     password: showHidePasswordProvider.isPassword,
                     validate: (text) {
@@ -112,7 +117,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     labelText: AppLocalizations.of(context)!.re_Password,
                     isSuffixIcon: true,
                     suffixIcon: AppImages.showHidePasswordIcon,
-                    suffixIconOnPress: showHidePasswordProvider.showHidePassword,
+                    suffixIconOnPress:
+                        showHidePasswordProvider.showHidePassword,
                     password: showHidePasswordProvider.isPassword,
                     validate: (text) {
                       if (passwordTextEditingControler.text != text) {
@@ -126,54 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               SizedBox(height: height * 0.02),
               CustomElevatedButton(
-                onPress: () async {
-                  if (_formKey.currentState!.validate()) {
-                    try {
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                            email: emailTextEditingControler.text,
-                            password: passwordTextEditingControler.text,
-                          );
-                      if (context.mounted) {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.success,
-                          text: 'Email Created Successfully!',
-                          onConfirmBtnTap: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          },
-                        );
-                        //Navigator.pop(context);
-                      }
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'weak-password') {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.error,
-                          title: "Oops...",
-                          text: "Weak Password"
-                        );
-                        //print('The password provided is too weak.');
-                      } else if (e.code == 'email-already-in-use') {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.error,
-                          title: 'Oops...',
-                          text: 'The account already exists for that email.',
-                        );
-                      }
-                    } catch (e) {
-                      QuickAlert.show(
-                        context: context,
-                        type: QuickAlertType.error,
-                        title: 'Oops...',
-                        text: "Error can't Ereate Email",
-                      );
-                      print(e.toString());
-                    }
-                  }
-                },
+                onPress: validate,
                 content: Text(
                   AppLocalizations.of(context)!.create_account,
                   style: AppFonts.medium20White,
@@ -208,5 +167,63 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+
+  validate() async {
+    {
+      if (_formKey.currentState!.validate()) {
+        try {
+          var credentials = await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(
+                email: emailTextEditingControler.text,
+                password: passwordTextEditingControler.text,
+              );
+          Users user = Users(
+            id: credentials.user!.uid,
+            name: nameTextEditingControler.text,
+            email: emailTextEditingControler.text,
+          );
+          FirebaseUtiles.addUser(user);
+          if (context.mounted) {
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.success,
+              text: 'Email Created Successfully!',
+              onConfirmBtnTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            );
+            //Navigator.pop(context);
+          }
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'weak-password') {
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: "Oops...",
+              text: "Weak Password",
+            );
+            //print('The password provided is too weak.');
+          } else if (e.code == 'email-already-in-use') {
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: 'Oops...',
+              text: 'The account already exists for that email.',
+            );
+          }
+        } catch (e) {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Oops...',
+            text: "Error can't Ereate Email",
+          );
+          print(e.toString());
+        }
+      }
+    }
+    ;
   }
 }

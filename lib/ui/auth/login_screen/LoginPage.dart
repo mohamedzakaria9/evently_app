@@ -1,8 +1,11 @@
+import 'package:evently_app/FirebaseUtiles.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
+import 'package:evently_app/models/LocalUser.dart';
 import 'package:evently_app/providers/ShowHidePasswordProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
+import 'package:evently_app/sharedPreferance/UserSharedPreferance.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +15,7 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../Routes.dart';
+import '../../../models/User.dart';
 import '../../../utilites/AppColors.dart';
 import '../../../utilites/AppFonts.dart';
 
@@ -99,47 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: height * 0.01),
                 CustomElevatedButton(
-                  onPress: () async {
-                    if (_formKey.currentState!.validate()) {
-                      try {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.loading,
-                          title: 'Loading',
-                          text: 'Fetching your data',
-                        );
-                        var credentials = await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                              email: emailController.text,
-                              password: passwordController.text,
-                            );
-                        Navigator.pop(context);
-                        if (context.mounted) {
-                          Navigator.popAndPushNamed(context, Routes.Home);
-                        }
-                      } on FirebaseAuthException {
-                        if (context.mounted) {
-                          Navigator.pop(context);
-                          QuickAlert.show(
-                            context: context,
-                            type: QuickAlertType.error,
-                            title: "Error",
-                            text: "Invalid email or password",
-                          );
-                        }
-                      } catch (e) {
-                        if (context.mounted) {
-                          Navigator.pop(context);
-                          QuickAlert.show(
-                            context: context,
-                            type: QuickAlertType.error,
-                            title: "Error",
-                            text: "Unknown Error",
-                          );
-                        }
-                      }
-                    }
-                  },
+                  onPress: validate,
                   content: Text(
                     AppLocalizations.of(context)!.login,
                     style: AppFonts.medium20White,
@@ -217,5 +181,53 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  validate()async{
+      if (_formKey.currentState!.validate()) {
+        try {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.loading,
+            title: 'Loading',
+            text: 'Fetching your data',
+          );
+          var credentials = await FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text,
+          );
+          Users? user = await FirebaseUtiles.getUser(credentials.user!.uid);
+          await UserSharedPreferance.setEmail(user!.email);
+          await UserSharedPreferance.setName(user.name);
+          await UserSharedPreferance.setLoggingStatus(true);
+          LocalUser.name = user.name;
+          LocalUser.email = user.email;
+          Navigator.pop(context);
+          if (context.mounted) {
+            Navigator.popAndPushNamed(context, Routes.Home);
+          }
+        } on FirebaseAuthException {
+          if (context.mounted) {
+            Navigator.pop(context);
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: "Error",
+              text: "Invalid email or password",
+            );
+          }
+        } catch (e) {
+          if (context.mounted) {
+            Navigator.pop(context);
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: "Error",
+              text: "Unknown Error",
+            );
+          }
+        }
+      }
   }
 }

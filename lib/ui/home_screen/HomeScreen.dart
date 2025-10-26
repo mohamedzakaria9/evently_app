@@ -1,6 +1,8 @@
 
+import 'package:evently_app/models/LocalUser.dart';
 import 'package:evently_app/providers/EventsProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
+import 'package:evently_app/sharedPreferance/UserSharedPreferance.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/ui/home_screen/EventsListView.dart';
 import 'package:evently_app/utilites/AppColors.dart';
@@ -18,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  @override
   Widget build(BuildContext context) {
     var eventProvider = Provider.of<EventsProvider>(context);
     eventProvider.loadTitle(context);
@@ -45,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("Welcome Back ✨", style: AppFonts.regular14White),
-              Text("John Safwat", style: AppFonts.bold24Grey),
+              Text(LocalUser.name!, style: AppFonts.bold24Grey),
               SizedBox(height: height * 0.01),
               Row(
                 children: [

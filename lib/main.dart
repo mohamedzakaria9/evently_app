@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:evently_app/Routes.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/models/LocalUser.dart';
 import 'package:evently_app/providers/EventsProvider.dart';
 import 'package:evently_app/providers/LanguageProvider.dart';
 import 'package:evently_app/providers/ShowHidePasswordProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
+import 'package:evently_app/sharedPreferance/UserSharedPreferance.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/ui/add_event_page/AddEventPage.dart';
 import 'package:evently_app/ui/auth/login_screen/LoginPage.dart';
@@ -28,22 +30,28 @@ void main() async{
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await FirebaseFirestore.instance.enableNetwork();
-  //await FirebaseFirestore.instance.disableNetwork();
+  bool? isLoggedIn = await UserSharedPreferance.isLoggedIn();
+  if(isLoggedIn == true){
+    LocalUser.name = await UserSharedPreferance.getName();
+    LocalUser.email = await UserSharedPreferance.getEmail();
+  }
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => EventsProvider()),
-        ChangeNotifierProvider(create: (_) => ShowHidePasswordProvider(),)
+        ChangeNotifierProvider(create: (_) => ShowHidePasswordProvider(),),
       ],
-      child: MyApp(),
+      child: MyApp(isLoggedIn: isLoggedIn,),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  bool? isLoggedIn;
+  MyApp({super.key, required this.isLoggedIn});
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<LanguageProvider>(context);
@@ -58,7 +66,7 @@ class MyApp extends StatelessWidget {
       locale: Locale(provider.localeLanguage),
       supportedLocales: [Locale("en"), Locale("ar")],
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.LoginScreen,
+      initialRoute:(isLoggedIn == false || isLoggedIn == null) ? Routes.LoginScreen : Routes.Home,
       routes: {
         Routes.Home: (context) => Home(),
         Routes.HomeScreen: (context) => HomeScreen(),

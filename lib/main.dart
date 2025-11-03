@@ -10,7 +10,6 @@ import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/sharedPreferance/UserSharedPreferance.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/ui/add_event_page/AddEventPage.dart';
-import 'package:evently_app/ui/add_event_page/GoogleMapsPage.dart';
 import 'package:evently_app/ui/auth/login_screen/LoginPage.dart';
 import 'package:evently_app/ui/auth/sign_up_screen/SignUpPage.dart';
 import 'package:evently_app/ui/favorites_screen/FavoritesScreen.dart';
@@ -28,9 +27,11 @@ import 'firebase_options.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  if(Firebase.apps.isEmpty){
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
   await FirebaseFirestore.instance.enableNetwork();
   bool? isLoggedIn = await UserSharedPreferance.isLoggedIn();
   if(isLoggedIn == true){

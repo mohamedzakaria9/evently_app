@@ -320,40 +320,46 @@ class _AddEventPageState extends State<AddEventPage> {
                   ),
                 ),
                 SizedBox(height: height * 0.02),
-                CustomElevatedButton(
-                  content: Text(
-                    AppLocalizations.of(context)!.add_event,
-                    style: AppFonts.medium20White,
-                  ),
-                  onPress: () {
-                    if (_formKey.currentState!.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      FirebaseUtiles.addEvent(
-                        Event(
-                          title: titleController.text,
-                          image: imagesList[currentIndex],
-                          category: eventsProvider.titles[currentIndex + 1],
-                          description: descriptionController.text,
-                          date: date!,
-                          time: currentTime!,
-                          latLng: chosenLocation!,
-                        ),
-                        LocalUser.uId!,
-                      );
-                      eventsProvider.getEvents(
-                        allowLoading: true,
-                        uId: LocalUser.uId!,
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Event Added Successfully'),
-                          backgroundColor: AppColors.appPrimaryColor,
-                        ),
-                      );
-                      Navigator.pop(context);
-                    }
-                  },
+                Consumer<LocationProvider>(
+                  builder: (context, value, child) {
+                    return CustomElevatedButton(
+                      content: Text(
+                        AppLocalizations.of(context)!.add_event,
+                        style: AppFonts.medium20White,
+                      ),
+                      onPress: () {
+                        if (_formKey.currentState!.validate()) {
+                          // If the form is valid, display a snackbar. In the real world,
+                          // you'd often call a server or save the information in a database.
+                          FirebaseUtiles.addEvent(
+                            Event(
+                              title: titleController.text,
+                              image: imagesList[currentIndex],
+                              category: eventsProvider.titles[currentIndex + 1],
+                              description: descriptionController.text,
+                              date: date!,
+                              time: currentTime!,
+                              latLng: chosenLocation!,
+                            ),
+                            LocalUser.uId!,
+                          );
+                          eventsProvider.getEvents(
+                            allowLoading: true,
+                            uId: LocalUser.uId!,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Event Added Successfully'),
+                              backgroundColor: AppColors.appPrimaryColor,
+                            ),
+                          );
+
+                          Navigator.pop(context);
+                          value.clearLocation();
+                        }
+                      },
+                    );
+                  }
                 ),
                 SizedBox(height: height * 0.05),
               ],

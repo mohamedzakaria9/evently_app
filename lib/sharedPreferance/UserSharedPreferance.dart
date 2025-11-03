@@ -2,6 +2,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSharedPreferance {
 
+  static getUserId() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("uId");
+  }
+
+  static setUserId(String uId) async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("uId", uId);
+  }
+
   static setLoggingStatus(bool logInStatus) async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("isLoggingIn", logInStatus);

@@ -201,6 +201,7 @@ class _LoginPageState extends State<LoginPage> {
           await UserSharedPreferance.setEmail(user!.email);
           await UserSharedPreferance.setName(user.name);
           await UserSharedPreferance.setLoggingStatus(true);
+          await UserSharedPreferance.setUserId(user.id);
           LocalUser.name = user.name;
           LocalUser.email = user.email;
           LocalUser.uId = user.id;

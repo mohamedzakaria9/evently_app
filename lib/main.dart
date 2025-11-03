@@ -4,11 +4,13 @@ import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/LocalUser.dart';
 import 'package:evently_app/providers/EventsProvider.dart';
 import 'package:evently_app/providers/LanguageProvider.dart';
+import 'package:evently_app/providers/LocationProvider.dart';
 import 'package:evently_app/providers/ShowHidePasswordProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/sharedPreferance/UserSharedPreferance.dart';
 import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/ui/add_event_page/AddEventPage.dart';
+import 'package:evently_app/ui/add_event_page/GoogleMapsPage.dart';
 import 'package:evently_app/ui/auth/login_screen/LoginPage.dart';
 import 'package:evently_app/ui/auth/sign_up_screen/SignUpPage.dart';
 import 'package:evently_app/ui/favorites_screen/FavoritesScreen.dart';
@@ -34,6 +36,7 @@ void main() async{
   if(isLoggedIn == true){
     LocalUser.name = await UserSharedPreferance.getName();
     LocalUser.email = await UserSharedPreferance.getEmail();
+    LocalUser.uId = await UserSharedPreferance.getUserId();
   }
   runApp(
     MultiProvider(
@@ -42,6 +45,7 @@ void main() async{
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => EventsProvider()),
         ChangeNotifierProvider(create: (_) => ShowHidePasswordProvider(),),
+        ChangeNotifierProvider(create: (_) => LocationProvider())
       ],
       child: MyApp(isLoggedIn: isLoggedIn,),
     ),
@@ -75,7 +79,7 @@ class MyApp extends StatelessWidget {
         Routes.MapsScreen: (context)=>MapsScreen(),
         Routes.LoginScreen: (context)=>LoginPage(),
         Routes.SignUpScreen:(context)=>SignUpPage(),
-        Routes.AddEventPage:(context)=>AddEventPage()
+        Routes.AddEventPage:(context)=>AddEventPage(),
       },
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

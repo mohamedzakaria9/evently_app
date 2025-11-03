@@ -385,6 +385,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No Data Found'**
   String get no_data_found;
+
+  /// No description provided for @choose_location.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Location'**
+  String get choose_location;
 }
 
 class _AppLocalizationsDelegate

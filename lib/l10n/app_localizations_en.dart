@@ -151,4 +151,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get no_data_found => 'No Data Found';
+
+  @override
+  String get choose_location => 'Choose Location';
 }

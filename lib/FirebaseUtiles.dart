@@ -19,6 +19,7 @@ class FirebaseUtiles {
       var eventDoc = eventRef.doc();
       event.id = eventDoc.id;
       print("✅ Event added to Firebase successfully with ID: ${event.id}");
+      print("this is the  latLang of the event ${event.latLng.latitude} and ${event.latLng.longitude} , ${event.latLng.runtimeType}");
       await eventDoc.set(event);
     } catch (e) {
       print("❌ Failed to add event: $e");

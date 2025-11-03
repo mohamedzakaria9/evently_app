@@ -1,3 +1,4 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 class Event {
@@ -9,7 +10,7 @@ class Event {
   DateTime date;
   var time;
   bool isFavorite;
-
+  LatLng latLng;
   Event({
     this.id,
     required this.image,
@@ -19,6 +20,7 @@ class Event {
     required this.date,
     required this.time,
     this.isFavorite = false,
+    required this.latLng,
   });
 
   static fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class Event {
       date: parseFlexibleDate(json['date']),
       time: json['time'],
       isFavorite: json['isFavorite'],
+      latLng: LatLng.fromJson(json['latLng'])!
     );
   }
 
@@ -45,7 +48,8 @@ class Event {
       "description": description,
       "date": DateFormat.yMMMd().format(date),
       "time": time,
-      "isFavorite": isFavorite
+      "isFavorite": isFavorite,
+      "latLng": latLng.toJson()
     };
   }
   static DateTime parseFlexibleDate(String input) {

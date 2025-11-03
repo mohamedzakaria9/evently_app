@@ -151,4 +151,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get no_data_found => 'لا يوجد بيانات';
+
+  @override
+  String get choose_location => 'اختار موقع';
 }

@@ -3,8 +3,11 @@ import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
 import 'package:evently_app/models/Event.dart';
+import 'package:evently_app/providers/LocationProvider.dart';
+import 'package:evently_app/ui/add_event_page/GoogleMapsPage.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../models/LocalUser.dart';
@@ -32,10 +35,8 @@ class _AddEventPageState extends State<AddEventPage> {
     AppImages.eatingImage,
   ];
 
-
-
   final _formKey = GlobalKey<FormState>();
-
+  LatLng? chosenLocation;
   int currentIndex = 0;
   var currentDate;
   var currentTime;
@@ -46,7 +47,7 @@ class _AddEventPageState extends State<AddEventPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<String>titles =  [
+    List<String> titles = [
       AppLocalizations.of(context)!.sport,
       AppLocalizations.of(context)!.birthday,
       AppLocalizations.of(context)!.meeting,
@@ -62,6 +63,17 @@ class _AddEventPageState extends State<AddEventPage> {
     var eventsProvider = Provider.of<EventsProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        leading: Consumer<LocationProvider>(
+          builder: (context, value, child) {
+            return IconButton(
+              onPressed: () {
+                value.clearLocation();
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back),
+            );
+          },
+        ),
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: AppColors.appPrimaryColor),
         title: Text(
@@ -200,23 +212,26 @@ class _AddEventPageState extends State<AddEventPage> {
                     Spacer(),
                     InkWell(
                       onTap: () async {
-                        print("this is the current time var before pick up: $time");
+                        // print(
+                        //   "this is the current time var before pick up: $time",
+                        // );
                         time = await showTimePicker(
                           context: context,
                           initialTime: TimeOfDay.now(),
                         );
-                        print("this is the current time after the pick up $time");
+                        // print(
+                        //   "this is the current time after the pick up $time",
+                        // );
                         if (time == null) {
                           currentTime = null;
                         } else {
-                          print(
-                            "this is the current time var before : $currentTime",
-                          );
-                          currentTime =
-                              time!.format(context);
-                          print(
-                            "this is the current time var after : $currentTime",
-                          );
+                          // print(
+                          //   "this is the current time var before : $currentTime",
+                          // );
+                          currentTime = time!.format(context);
+                          // print(
+                          //   "this is the current time var after : $currentTime",
+                          // );
                         }
                         setState(() {});
                       },
@@ -247,30 +262,61 @@ class _AddEventPageState extends State<AddEventPage> {
                     ),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: height * 0.01,
-                          horizontal: width * 0.02,
+                  child: Consumer<LocationProvider>(
+                    builder: (context, value, child) {
+                      return InkWell(
+                        onTap: () async {
+                          LatLng? location = await Navigator.push<LatLng>(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return GoogleMapsPage();
+                              },
+                            ),
+                          );
+                          value.updateLocation(location!);
+                          chosenLocation = value.location;
+                          print(
+                            "this is the location variable ${location!.latitude} and ${location.longitude}",
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: height * 0.01,
+                                horizontal: width * 0.02,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColors.appPrimaryColor,
+                              ),
+                              child: ImageIcon(
+                                AssetImage(AppImages.locationIcon),
+                                color: AppColors.whiteColor,
+                              ),
+                            ),
+                            SizedBox(width: width * 0.02),
+                            Expanded(
+                              child: Text(
+                                textAlign: TextAlign.center,
+                                value.location == null
+                                    ? AppLocalizations.of(
+                                        context,
+                                      )!.choose_location
+                                    : "Chosen Location is ${value.location!.latitude} and ${value.location!.longitude}",
+                                style: AppFonts.medium16Primary,
+                              ),
+                            ),
+                            Spacer(),
+                            Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              color: AppColors.appPrimaryColor,
+                            ),
+                          ],
                         ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.appPrimaryColor,
-                        ),
-                        child: ImageIcon(
-                          AssetImage(AppImages.locationIcon),
-                          color: AppColors.whiteColor,
-                        ),
-                      ),
-                      SizedBox(width: width * 0.02),
-                      Text("Cairo , Egypt", style: AppFonts.medium16Primary),
-                      Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: AppColors.appPrimaryColor,
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: height * 0.02),
@@ -287,14 +333,18 @@ class _AddEventPageState extends State<AddEventPage> {
                         Event(
                           title: titleController.text,
                           image: imagesList[currentIndex],
-                          category: eventsProvider.titles[currentIndex+1],
+                          category: eventsProvider.titles[currentIndex + 1],
                           description: descriptionController.text,
                           date: date!,
                           time: currentTime!,
+                          latLng: chosenLocation!,
                         ),
-                        LocalUser.uId!
+                        LocalUser.uId!,
                       );
-                      eventsProvider.getEvents(allowLoading: true,uId: LocalUser.uId!);
+                      eventsProvider.getEvents(
+                        allowLoading: true,
+                        uId: LocalUser.uId!,
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Event Added Successfully'),

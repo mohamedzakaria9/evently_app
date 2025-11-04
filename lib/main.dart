@@ -12,6 +12,7 @@ import 'package:evently_app/theme/AppTheme.dart';
 import 'package:evently_app/ui/add_event_page/AddEventPage.dart';
 import 'package:evently_app/ui/auth/login_screen/LoginPage.dart';
 import 'package:evently_app/ui/auth/sign_up_screen/SignUpPage.dart';
+import 'package:evently_app/ui/event_details/EventDetailsScreen.dart';
 import 'package:evently_app/ui/favorites_screen/FavoritesScreen.dart';
 import 'package:evently_app/ui/home_screen/Home.dart';
 import 'package:evently_app/ui/home_screen/HomeScreen.dart';
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
         Routes.LoginScreen: (context)=>LoginPage(),
         Routes.SignUpScreen:(context)=>SignUpPage(),
         Routes.AddEventPage:(context)=>AddEventPage(),
+        Routes.EventDetailsScreen: (context) => EventDetailsScreen()
       },
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

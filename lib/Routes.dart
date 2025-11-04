@@ -7,4 +7,5 @@ class Routes{
   static const String LoginScreen = "loginScreen";
   static const String SignUpScreen = "signUpScreen";
   static const String AddEventPage = "addEventPage";
+  static const String EventDetailsScreen = "eventDetailsScreen";
 }

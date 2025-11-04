@@ -47,5 +47,6 @@
   "choose_date": "Choose Date",
   "choose_time": "Choose Time",
   "no_data_found": "No Data Found",
-  "choose_location": "Choose Location"
+  "choose_location": "Choose Location",
+  "event_details": "Event Details"
 }

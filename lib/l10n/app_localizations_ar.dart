@@ -154,4 +154,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get choose_location => 'اختار موقع';
+
+  @override
+  String get event_details => 'تفاصيل الحدث';
 }

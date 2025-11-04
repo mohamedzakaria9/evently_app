@@ -47,5 +47,6 @@
   "choose_date": "أختر تاريخ",
   "choose_time": "أختر وقت",
   "no_data_found": "لا يوجد بيانات",
-  "choose_location": "اختار موقع"
+  "choose_location": "اختار موقع",
+  "event_details": "تفاصيل الحدث"
 }

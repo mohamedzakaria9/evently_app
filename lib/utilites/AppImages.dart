@@ -31,4 +31,7 @@ class AppImages{
   static const String locationIcon = "assets/images/LocationIcon.png";
   static const String titleIcon = "assets/images/TitleIcon.png";
   static const String favoriteIconFilled = "assets/images/FavoriteIconFilled.png";
+  static const String deleteIcon = "assets/images/DeleteIcon.png";
+  static const String editIcon = "assets/images/EditIcon.png";
+  static const String rightArrowIcon = "assets/images/IconRightArrow.png";
 }

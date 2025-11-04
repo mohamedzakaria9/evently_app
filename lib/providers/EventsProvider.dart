@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '../FirebaseUtiles.dart';
@@ -14,8 +15,12 @@ class EventsProvider extends ChangeNotifier {
   int currentIndex = 0;
   List<String> titles = [];
   bool isLoading = false;
+  Set<Marker> eventsLocations = {};
 
-  Future<void> getStoredEvents({bool shouldNotify = true,required String uId}) async {
+  Future<void> getStoredEvents({
+    bool shouldNotify = true,
+    required String uId,
+  }) async {
     var eventsCollection = FirebaseUtiles.getEvents(uId);
     QuerySnapshot<Event> eventsDocs = await eventsCollection.get();
     events = eventsDocs.docs.map((event) {
@@ -39,16 +44,19 @@ class EventsProvider extends ChangeNotifier {
     if (events.isEmpty) {
       //print("i didn't find any thing");
     } else {
-      if(shouldNotify){
+      if (shouldNotify) {
         notifyListeners();
       }
     }
   }
 
-  Future<void> getEventCategory({required bool allowLoading,required String uId}) async {
+  Future<void> getEventCategory({
+    required bool allowLoading,
+    required String uId,
+  }) async {
     isLoading = allowLoading;
     notifyListeners();
-    await getStoredEvents(shouldNotify: false,uId: uId);
+    await getStoredEvents(shouldNotify: false, uId: uId);
     selectedTitle = events
         .where((element) => element.category == titles[currentIndex])
         .toList();
@@ -57,21 +65,38 @@ class EventsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getEvents({required bool allowLoading, required String uId}) async{
+  void getEvents({required bool allowLoading, required String uId}) async {
     isLoading = allowLoading;
     notifyListeners();
     // print("this is print from the get Events function");
     // print("this is the current index for the $currentIndex");
-    if(currentIndex == 0){
+    if (currentIndex == 0) {
       await getStoredEvents(uId: uId);
-    }else{
+    } else {
       await getEventCategory(allowLoading: true, uId: uId);
     }
     isLoading = false;
     notifyListeners();
   }
 
-  void addFavorite(Event event, BuildContext context,{required String uId}) async{
+  Future<void> getLocations({required String uId}) async{
+    await getStoredEvents(uId: uId);
+    for (var event in events) {
+      eventsLocations.add(
+        Marker(
+          markerId: MarkerId(event.id!),
+          position: LatLng(event.latLng.latitude, event.latLng.longitude),
+        ),
+      );
+    }
+    notifyListeners();
+  }
+
+  void addFavorite(
+    Event event,
+    BuildContext context, {
+    required String uId,
+  }) async {
     CollectionReference events = FirebaseUtiles.getEvents(uId);
     await events
         .doc(event.id)
@@ -79,14 +104,13 @@ class EventsProvider extends ChangeNotifier {
         .then((value) {
           //Duration(milliseconds: 500);
 
-            // print("this is the print from the add favorite in the then function");
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Event Updated Successfully'),
-                backgroundColor: AppColors.appPrimaryColor,
-              ),
-            );
-
+          // print("this is the print from the add favorite in the then function");
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Event Updated Successfully'),
+              backgroundColor: AppColors.appPrimaryColor,
+            ),
+          );
         })
         .timeout(
           Duration(milliseconds: 3000),
@@ -102,11 +126,11 @@ class EventsProvider extends ChangeNotifier {
             }
           },
         );
-    if(currentIndex == 0){
+    if (currentIndex == 0) {
       getStoredEvents(uId: uId);
-    }else{
+    } else {
       // print("this is the print from the else condition in the add favorite before call");
-      getEventCategory(allowLoading: false,uId: uId);
+      getEventCategory(allowLoading: false, uId: uId);
       // print("this is the print from the else condition in the add favorite after call");
     }
   }
@@ -140,8 +164,7 @@ class EventsProvider extends ChangeNotifier {
     }
   }
 
-
-  void clearData(){
+  void clearData() {
     events = [];
     selectedTitle = [];
     favoriteEvents = [];

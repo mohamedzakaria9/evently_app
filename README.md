@@ -80,7 +80,7 @@ Before you begin, ensure you have the following installed:
 You can download the Evently app from the following platforms:
 
 #### Android
-- [Download APK]([https://your-download-link-here](https://drive.google.com/file/d/1QhrIwMGf7BulFxzpg1Bl9oMJo4y8EXHa/view?usp=sharing)) - Direct APK download
+- [Download APK](https://drive.google.com/file/d/1QhrIwMGf7BulFxzpg1Bl9oMJo4y8EXHa/view?usp=sharing) - Direct APK download
 - [Google Play Store]() - Coming soon
 
 #### iOS

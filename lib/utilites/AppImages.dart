@@ -34,4 +34,5 @@ class AppImages{
   static const String deleteIcon = "assets/images/DeleteIcon.png";
   static const String editIcon = "assets/images/EditIcon.png";
   static const String rightArrowIcon = "assets/images/IconRightArrow.png";
+  static const String profileImage = "assets/images/profileImage.jpg";
 }

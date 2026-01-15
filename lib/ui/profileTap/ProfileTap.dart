@@ -47,8 +47,15 @@ class _ProfileTapState extends State<ProfileTap> {
               ),
               child: Row(
                 children: [
-                  Image.asset(AppImages.profilePageImage),
-                  SizedBox(width: width*0.03,),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(360),
+                    child: Image.asset(
+                      AppImages.profileImage,
+                      width: width * 0.2,
+                      height: height * 0.09,
+                    ),
+                  ),
+                  SizedBox(width: width * 0.03),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +64,7 @@ class _ProfileTapState extends State<ProfileTap> {
                           LocalUser.name ?? "Can't load name",
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
-                        SizedBox(height: height*0.005,),
+                        SizedBox(height: height * 0.005),
                         Text(
                           LocalUser.email ?? "Can't load email",
                           style: Theme.of(context).textTheme.bodySmall,
@@ -112,19 +119,31 @@ class _ProfileTapState extends State<ProfileTap> {
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.redColor,
-                        padding: EdgeInsets.symmetric(vertical: height*0.01,horizontal: width*0.04),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))
+                        padding: EdgeInsets.symmetric(
+                          vertical: height * 0.01,
+                          horizontal: width * 0.04,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                       ),
                       child: InkWell(
-                        onTap: ()async{
+                        onTap: () async {
                           await FirebaseAuth.instance.signOut();
                           await UserSharedPreferance.setLoggingStatus(false);
-                          final eventProvider = Provider.of<EventsProvider>(context, listen: false);
+                          final eventProvider = Provider.of<EventsProvider>(
+                            context,
+                            listen: false,
+                          );
                           eventProvider.clearData();
                           Navigator.pop(context);
-                          Navigator.pushNamedAndRemoveUntil(context, Routes.LoginScreen,(route) {
-                            return false;
-                          },);
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            Routes.LoginScreen,
+                            (route) {
+                              return false;
+                            },
+                          );
                         },
                         child: Row(
                           children: [
@@ -138,7 +157,7 @@ class _ProfileTapState extends State<ProfileTap> {
                         ),
                       ),
                     ),
-                    SizedBox(height: height*0.04,)
+                    SizedBox(height: height * 0.04),
                   ],
                 ),
               ),

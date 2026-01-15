@@ -123,6 +123,8 @@ class _LoginPageState extends State<LoginPage> {
                     InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, Routes.SignUpScreen);
+                        emailController.text = "";
+                        passwordController.text = "";
                       },
                       child: Text(
                         AppLocalizations.of(context)!.create_account,

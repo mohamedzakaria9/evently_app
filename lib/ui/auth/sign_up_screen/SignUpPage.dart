@@ -4,16 +4,15 @@ import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
 import 'package:evently_app/providers/ShowHidePasswordProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
+import 'package:evently_app/ui/auth/sign_up_screen/SignUpNavigator.dart';
+import 'package:evently_app/ui/auth/sign_up_screen/SignUpViewModel.dart';
 import 'package:evently_app/utilites/AppImages.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:quickalert/quickalert.dart';
 import '../../../theme/AppTheme.dart';
 import '../../../utilites/AppColors.dart';
 import '../../../utilites/AppFonts.dart';
-import 'package:evently_app/models/User.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -22,12 +21,18 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
   final _formKey = GlobalKey<FormState>();
   TextEditingController passwordTextEditingControler = TextEditingController();
   TextEditingController emailTextEditingControler = TextEditingController();
   TextEditingController nameTextEditingControler = TextEditingController();
-
+  Signupviewmodel viewModel = Signupviewmodel();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    viewModel.navigator = this;
+  }
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -172,58 +177,42 @@ class _SignUpPageState extends State<SignUpPage> {
   validate() async {
     {
       if (_formKey.currentState!.validate()) {
-        try {
-          var credentials = await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(
-                email: emailTextEditingControler.text,
-                password: passwordTextEditingControler.text,
-              );
-          Users user = Users(
-            id: credentials.user!.uid,
-            name: nameTextEditingControler.text,
-            email: emailTextEditingControler.text,
-          );
-          FirebaseUtiles.addUser(user);
-          if (context.mounted) {
-            QuickAlert.show(
-              context: context,
-              type: QuickAlertType.success,
-              text: 'Email Created Successfully!',
-              onConfirmBtnTap: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
-            );
-            //Navigator.pop(context);
-          }
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'weak-password') {
-            QuickAlert.show(
-              context: context,
-              type: QuickAlertType.error,
-              title: "Oops...",
-              text: "Weak Password",
-            );
-            //print('The password provided is too weak.');
-          } else if (e.code == 'email-already-in-use') {
-            QuickAlert.show(
-              context: context,
-              type: QuickAlertType.error,
-              title: 'Oops...',
-              text: 'The account already exists for that email.',
-            );
-          }
-        } catch (e) {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            title: 'Oops...',
-            text: "Error can't Ereate Email",
-          );
-          print(e.toString());
-        }
+        viewModel.validate(
+          email: emailTextEditingControler.text,
+          password: passwordTextEditingControler.text,
+          name: nameTextEditingControler.text
+        );
       }
     }
     ;
+  }
+
+  @override
+  void hideMessage() {
+    // TODO: implement hideMessage
+    Navigator.pop(context);
+  }
+
+  @override
+  void showError(String message) {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      text: message,
+    );
+  }
+
+  @override
+  void showSuccess(String message) {
+    // TODO: implement showSuccess
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: message,
+      onConfirmBtnTap: (){
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+    );
   }
 }

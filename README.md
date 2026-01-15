@@ -80,18 +80,11 @@ Before you begin, ensure you have the following installed:
 You can download the Evently app from the following platforms:
 
 #### Android
-- [Download APK](https://your-download-link-here) - Direct APK download
-- [Google Play Store](https://play.google.com/store/apps/details?id=your.package.name) - Coming soon
+- [Download APK](https://drive.google.com/file/d/1QhrIwMGf7BulFxzpg1Bl9oMJo4y8EXHa/view?usp=sharing) - Direct APK download
+- [Google Play Store]() - Coming soon
 
 #### iOS
-- [App Store](https://apps.apple.com/app/your-app-id) - Coming soon
-
-#### Web
-- [Web App](https://your-web-app-url.com) - Access the app in your browser
-
----
-
-**Note**: Replace the placeholder links above with your actual download links when the app is published.
+- [App Store]() - Coming soon
 
 ## 🏗️ Project Structure
 
@@ -146,23 +139,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👥 Authors
-
-- Your Name - [Your GitHub](https://github.com/yourusername)
-
-## 🙏 Acknowledgments
-
-- Flutter team for the amazing framework
-- Firebase for backend services
-- All contributors and open-source libraries used in this project
-
----
-
-**Version**: 1.0.0+1
-
-For more information, visit [your-website.com](https://your-website.com)

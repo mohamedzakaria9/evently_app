@@ -1,4 +1,3 @@
-import 'package:evently_app/FirebaseUtiles.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
@@ -6,6 +5,7 @@ import 'package:evently_app/providers/ShowHidePasswordProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
 import 'package:evently_app/ui/auth/sign_up_screen/SignUpNavigator.dart';
 import 'package:evently_app/ui/auth/sign_up_screen/SignUpViewModel.dart';
+import 'package:evently_app/utilites/AlertDialoge.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,12 +27,14 @@ class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
   TextEditingController emailTextEditingControler = TextEditingController();
   TextEditingController nameTextEditingControler = TextEditingController();
   Signupviewmodel viewModel = Signupviewmodel();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     viewModel.navigator = this;
   }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -180,7 +182,7 @@ class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
         viewModel.validate(
           email: emailTextEditingControler.text,
           password: passwordTextEditingControler.text,
-          name: nameTextEditingControler.text
+          name: nameTextEditingControler.text,
         );
       }
     }
@@ -195,24 +197,11 @@ class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
 
   @override
   void showError(String message) {
-    QuickAlert.show(
-      context: context,
-      type: QuickAlertType.error,
-      text: message,
-    );
+    AlertDialoge.showError(context: context, message: message);
   }
 
   @override
   void showSuccess(String message) {
-    // TODO: implement showSuccess
-    QuickAlert.show(
-      context: context,
-      type: QuickAlertType.success,
-      text: message,
-      onConfirmBtnTap: (){
-        Navigator.pop(context);
-        Navigator.pop(context);
-      }
-    );
+    AlertDialoge.showSuccess(context: context, message: message);
   }
 }

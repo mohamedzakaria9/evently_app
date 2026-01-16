@@ -1,4 +1,3 @@
-
 import 'package:evently_app/models/LocalUser.dart';
 import 'package:evently_app/providers/EventsProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';

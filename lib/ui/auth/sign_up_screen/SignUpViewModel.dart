@@ -1,11 +1,9 @@
 import 'package:evently_app/ui/auth/sign_up_screen/SignUpNavigator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-
 import '../../../FirebaseUtiles.dart';
 import '../../../models/User.dart';
 
-class Signupviewmodel extends ChangeNotifier{
+class Signupviewmodel{
   late SignUpNavigator navigator;
   void validate({required String email,required String password,required String name}) async{
     try {

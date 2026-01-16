@@ -1,21 +1,16 @@
-import 'package:evently_app/FirebaseUtiles.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/CustomElevatedButton.dart';
 import 'package:evently_app/models/CustomTextFormField.dart';
-import 'package:evently_app/models/LocalUser.dart';
 import 'package:evently_app/providers/ShowHidePasswordProvider.dart';
 import 'package:evently_app/providers/ThemeProvider.dart';
-import 'package:evently_app/sharedPreferance/UserSharedPreferance.dart';
 import 'package:evently_app/theme/AppTheme.dart';
+import 'package:evently_app/ui/auth/login_screen/LoginNavigator.dart';
+import 'package:evently_app/ui/auth/login_screen/LoginViewModel.dart';
+import 'package:evently_app/utilites/AlertDialoge.dart';
 import 'package:evently_app/utilites/AppImages.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
-
 import '../../../Routes.dart';
-import '../../../models/User.dart';
 import '../../../utilites/AppColors.dart';
 import '../../../utilites/AppFonts.dart';
 
@@ -26,17 +21,22 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> implements LoginNavigator {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
+  LoginViewModel viewModel = LoginViewModel();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    viewModel.navigator = this;
+  }
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     var themeProvider = Provider.of<ThemeProvider>(context);
-    //print("this is print from the build method");
     return Form(
       key: _formKey,
       child: Scaffold(
@@ -185,53 +185,36 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  validate()async{
-      if (_formKey.currentState!.validate()) {
-        try {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.loading,
-            title: 'Loading',
-            text: 'Fetching your data',
-          );
-          var credentials = await FirebaseAuth.instance
-              .signInWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text,
-          );
-          Users? user = await FirebaseUtiles.getUser(credentials.user!.uid);
-          await UserSharedPreferance.setEmail(user!.email);
-          await UserSharedPreferance.setName(user.name);
-          await UserSharedPreferance.setLoggingStatus(true);
-          await UserSharedPreferance.setUserId(user.id);
-          LocalUser.name = user.name;
-          LocalUser.email = user.email;
-          LocalUser.uId = user.id;
-          Navigator.pop(context);
-          if (context.mounted) {
-            Navigator.popAndPushNamed(context, Routes.Home);
-          }
-        } on FirebaseAuthException {
-          if (context.mounted) {
-            Navigator.pop(context);
-            QuickAlert.show(
-              context: context,
-              type: QuickAlertType.error,
-              title: "Error",
-              text: "Invalid email or password",
-            );
-          }
-        } catch (e) {
-          if (context.mounted) {
-            Navigator.pop(context);
-            QuickAlert.show(
-              context: context,
-              type: QuickAlertType.error,
-              title: "Error",
-              text: "Unknown Error",
-            );
-          }
-        }
-      }
+  validate() async {
+    if (_formKey.currentState!.validate()) {
+      viewModel.validate(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+    }
+  }
+
+  @override
+  void hideLoading() {
+    // TODO: implement hideLoading
+    AlertDialoge.hideLoading(context: context);
+  }
+
+  @override
+  void navigateToHome() {
+    // TODO: implement navigateToHome
+    Navigator.pushReplacementNamed(context, Routes.Home);
+  }
+
+  @override
+  void showError({required String message, required String title}) {
+    // TODO: implement showError
+    AlertDialoge.showError(context: context, message: message);
+  }
+
+  @override
+  void showLoading({required String message, required String title}) {
+    // TODO: implement showLoading
+    AlertDialoge.showLoading(context: context, message: message, title: title);
   }
 }

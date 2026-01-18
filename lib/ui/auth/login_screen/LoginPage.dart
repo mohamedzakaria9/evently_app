@@ -22,9 +22,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> implements LoginNavigator {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   LoginViewModel viewModel = LoginViewModel();
   @override
   void initState() {
@@ -38,7 +35,7 @@ class _LoginPageState extends State<LoginPage> implements LoginNavigator {
     var height = MediaQuery.of(context).size.height;
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Form(
-      key: _formKey,
+      key: viewModel.formKey,
       child: Scaffold(
         body: SafeArea(
           child: Padding(
@@ -48,7 +45,7 @@ class _LoginPageState extends State<LoginPage> implements LoginNavigator {
               children: [
                 Image.asset(AppImages.appLogo, height: height * 0.3),
                 Customtextformfield(
-                  textEditingController: emailController,
+                  textEditingController: viewModel.emailController,
                   prefixIcon: AppImages.emailIcon,
                   labelText: AppLocalizations.of(context)!.email,
                   validate: (text) {
@@ -69,7 +66,7 @@ class _LoginPageState extends State<LoginPage> implements LoginNavigator {
                       "this is print from the consumer of the password provider",
                     );
                     return Customtextformfield(
-                      textEditingController: passwordController,
+                      textEditingController: viewModel.passwordController,
                       prefixIcon: AppImages.passwordIcon,
                       labelText: AppLocalizations.of(context)!.password,
                       isSuffixIcon: true,
@@ -103,7 +100,7 @@ class _LoginPageState extends State<LoginPage> implements LoginNavigator {
                 ),
                 SizedBox(height: height * 0.01),
                 CustomElevatedButton(
-                  onPress: validate,
+                  onPress: viewModel.validate,
                   content: Text(
                     AppLocalizations.of(context)!.login,
                     style: AppFonts.medium20White,
@@ -123,8 +120,8 @@ class _LoginPageState extends State<LoginPage> implements LoginNavigator {
                     InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, Routes.SignUpScreen);
-                        emailController.text = "";
-                        passwordController.text = "";
+                        viewModel.emailController.text = "";
+                        viewModel.passwordController.text = "";
                       },
                       child: Text(
                         AppLocalizations.of(context)!.create_account,
@@ -185,14 +182,7 @@ class _LoginPageState extends State<LoginPage> implements LoginNavigator {
     );
   }
 
-  validate() async {
-    if (_formKey.currentState!.validate()) {
-      viewModel.validate(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-    }
-  }
+
 
   @override
   void hideLoading() {

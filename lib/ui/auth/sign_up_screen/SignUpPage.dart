@@ -9,7 +9,6 @@ import 'package:evently_app/utilites/AlertDialoge.dart';
 import 'package:evently_app/utilites/AppImages.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickalert/quickalert.dart';
 import '../../../theme/AppTheme.dart';
 import '../../../utilites/AppColors.dart';
 import '../../../utilites/AppFonts.dart';
@@ -22,10 +21,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
-  final _formKey = GlobalKey<FormState>();
-  TextEditingController passwordTextEditingControler = TextEditingController();
-  TextEditingController emailTextEditingControler = TextEditingController();
-  TextEditingController nameTextEditingControler = TextEditingController();
+
   Signupviewmodel viewModel = Signupviewmodel();
 
   @override
@@ -41,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
     var height = MediaQuery.of(context).size.height;
     var themeProvider = Provider.of<ThemeProvider>(context);
     return Form(
-      key: _formKey,
+      key: viewModel.formKey,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -73,14 +69,14 @@ class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
               Customtextformfield(
                 prefixIcon: AppImages.userNameIcon,
                 labelText: AppLocalizations.of(context)!.name,
-                textEditingController: nameTextEditingControler,
+                textEditingController: viewModel.nameTextEditingControler,
                 validate: (text) {
                   return null;
                 },
               ),
               SizedBox(height: height * 0.02),
               Customtextformfield(
-                textEditingController: emailTextEditingControler,
+                textEditingController: viewModel.emailTextEditingControler,
                 prefixIcon: AppImages.emailIcon,
                 labelText: AppLocalizations.of(context)!.email,
                 validate: (text) {
@@ -98,7 +94,7 @@ class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
               Consumer<ShowHidePasswordProvider>(
                 builder: (context, showHidePasswordProvider, child) {
                   return Customtextformfield(
-                    textEditingController: passwordTextEditingControler,
+                    textEditingController: viewModel.passwordTextEditingControler,
                     prefixIcon: AppImages.passwordIcon,
                     labelText: AppLocalizations.of(context)!.password,
                     isSuffixIcon: true,
@@ -128,7 +124,7 @@ class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
                         showHidePasswordProvider.showHidePassword,
                     password: showHidePasswordProvider.isPassword,
                     validate: (text) {
-                      if (passwordTextEditingControler.text != text) {
+                      if (viewModel.passwordTextEditingControler.text != text) {
                         return "Password don't match";
                       } else {
                         return null;
@@ -139,7 +135,7 @@ class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
               ),
               SizedBox(height: height * 0.02),
               CustomElevatedButton(
-                onPress: validate,
+                onPress: viewModel.validate,
                 content: Text(
                   AppLocalizations.of(context)!.create_account,
                   style: AppFonts.medium20White,
@@ -175,20 +171,6 @@ class _SignUpPageState extends State<SignUpPage> implements SignUpNavigator {
       ),
     );
   }
-
-  validate() async {
-    {
-      if (_formKey.currentState!.validate()) {
-        viewModel.validate(
-          email: emailTextEditingControler.text,
-          password: passwordTextEditingControler.text,
-          name: nameTextEditingControler.text,
-        );
-      }
-    }
-    ;
-  }
-
   @override
   void hideMessage() {
     // TODO: implement hideMessage
